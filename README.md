@@ -1,3 +1,5 @@
+> **Note:** This is a fork of the original [Riichi-Trainer by Euophrys](https://github.com/Euophrys/Riichi-Trainer). It adds some extra features (such as the Undo button and tile images in the hand history) on top of the original project. All credit for the underlying trainer goes to the original author and contributors.
+
 If you're looking to contribute, translations or otherwise, please see the [contributing guidelines](https://github.com/Euophrys/Riichi-Trainer/blob/develop/CONTRIBUTING.md) for instructions.
 
 This is a collection of tools designed to improve the play of Riichi Mahjong players. It includes an efficiency trainer to help players identify the best tile to discard, a replay analyzer to check the efficiency (and safety, if relevant) of a player's discards, an all-last trainer to assist with comebacks, and a few random utilities.
@@ -11,6 +13,12 @@ See the [itch.io page](https://euophrys.itch.io/mahjong-efficiency-trainer) for 
 The main Trainer tab now has an **Undo** button next to "New Hand". It steps back exactly one discard, restoring the previous game state (your hand, the tile you had drawn, the discard pool, the remaining wall, the history log, and your running efficiency totals). Because each draw is random, undo replays the *exact* prior state rather than recomputing it, so undoing and re-discarding stays consistent.
 
 The button is disabled on the first selection of a hand (there is nothing to undo) and resets whenever a new hand starts. If the undone discard had completed the round, the stats that were saved for that completion are rolled back as well. The label is translated in all supported languages.
+
+## Tile images in hand history (Efficiency Trainer)
+
+The hand history messages are laid out across three rows — your discard and its result, the most efficient discard, and the tile you drew — with the key part of each row in bold.
+
+A setting, **"Show tile images in hand history"** (in the Trainer's Settings, under "Verbose tile names"), is **on by default**. When enabled, the discarded tile, the suggested tile, and the drawn tile are shown as inline tile images instead of text; the lists of tiles that improve the hand stay as text either way. Turning the setting off reverts to a plain text-only history.
 
 # For Programmers:
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). Make sure to run `npm install`, everyone's favourite command.
