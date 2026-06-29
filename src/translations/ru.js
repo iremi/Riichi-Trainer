@@ -39,6 +39,7 @@ export const ru = {
             start: "Запущена новая рука: {{hand}}",
             complete: " Ваша рука собрана. Поздравляем! Ваша эффективность была {{achieved}}/{{total}}, или {{percent}}%.",
             newHandButtonLabel: "Новая рука",
+            undoButtonLabel: "Отменить",
             loadButtonLabel: "Загрузить руку",
             roundWind: "Ветер раунда:",
             seatWind: "Ваш ветер:",

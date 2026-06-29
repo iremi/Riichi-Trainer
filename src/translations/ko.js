@@ -39,6 +39,7 @@ export const ko = {
             start: "새로운 손패로 시작했습니다: {{hand}}",
             complete: " 텐파이 했습니다. 축하합니다! 당신의 효율성은 {{achieved}}/{{total}}(으)로, {{percent}}% 입니다.",
             newHandButtonLabel: "새 손패",
+            undoButtonLabel: "되돌리기",
             loadButtonLabel: "손패 불러오기",
             roundWind: "장풍:",
             seatWind: "자풍:",

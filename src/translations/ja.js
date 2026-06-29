@@ -39,6 +39,7 @@ export const ja = {
             start: "新しい手牌が始まりました： {{hand}}",
             complete: "テンパイしました。おめでとう！あなたの効率は{{achieved}}/{{total}}で、{{percent}}%でした。",
             newHandButtonLabel: "新しい手牌",
+            undoButtonLabel: "元に戻す",
             loadButtonLabel: "手牌をロード",
             roundWind: "場風:",
             seatWind: "自風:",

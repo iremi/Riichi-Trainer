@@ -39,6 +39,7 @@ export const en = {
             start: "Started a new hand: {{hand}}",
             complete: " Your hand is now ready. Congratulations! Your efficiency was {{achieved}}/{{total}}, or {{percent}}%.",
             newHandButtonLabel: "New Hand",
+            undoButtonLabel: "Undo",
             loadButtonLabel: "Load Hand",
             roundWind: "Round Wind:",
             seatWind: "Seat Wind:",

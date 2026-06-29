@@ -39,6 +39,7 @@ export const pl = {
             start: "Rozegraj nową rękę: {{hand}}",
             complete: " Twoja ręka jest w tenpai. Gratulacje! Twoja wydajność to {{achieved}}/{{total}}, or {{percent}}%.",
             newHandButtonLabel: "Nowa ręka",
+            undoButtonLabel: "Cofnij",
             loadButtonLabel: "Wczytaj rękę",
             roundWind: "Wiatr Rundy:",
             seatWind: "Wiatr Gracza:",

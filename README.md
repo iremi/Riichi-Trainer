@@ -6,6 +6,12 @@ When referring to efficiency here, we're referring to ukeire, which is the tile 
 
 See the [itch.io page](https://euophrys.itch.io/mahjong-efficiency-trainer) for more information.
 
+## Undo button (Efficiency Trainer)
+
+The main Trainer tab now has an **Undo** button next to "New Hand". It steps back exactly one discard, restoring the previous game state (your hand, the tile you had drawn, the discard pool, the remaining wall, the history log, and your running efficiency totals). Because each draw is random, undo replays the *exact* prior state rather than recomputing it, so undoing and re-discarding stays consistent.
+
+The button is disabled on the first selection of a hand (there is nothing to undo) and resets whenever a new hand starts. If the undone discard had completed the round, the stats that were saved for that completion are rolled back as well. The label is translated in all supported languages.
+
 # For Programmers:
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). Make sure to run `npm install`, everyone's favourite command.
 

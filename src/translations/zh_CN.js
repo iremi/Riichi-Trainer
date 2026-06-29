@@ -39,6 +39,7 @@ export const zh_CN = {
             start: "开始了一副新的手牌：{{hand}}",
             complete: "恭喜你听牌了！你的效率是{{achieved}}/{{total}}或{{percent}}%.",
             newHandButtonLabel: "新的手牌",
+            undoButtonLabel: "撤销",
             loadButtonLabel: "加载手牌",
             roundWind: "场风：",
             seatWind: "自风：",

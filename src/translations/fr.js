@@ -39,6 +39,7 @@ export const fr = {
             start: "Vous avez débuté une nouvelle main : {{hand}}",
             complete: " Votre main est maintenant prête. Félicitation ! Votre efficacité a été de {{achieved}}/{{total}}, soit {{percent}}%.",
             newHandButtonLabel: "Nouvelle main",
+            undoButtonLabel: "Annuler",
             loadButtonLabel: "Charger une main",
             roundWind: "Vent du tour :",
             seatWind: "Vent du joueur :",

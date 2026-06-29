@@ -39,6 +39,7 @@ export const pt = {
             start: "Comecou uma nova mao: {{hand}}",
             complete: " Sua mao agora esta pronta. Parabens! Sua eficiencia foi {{achieved}}/{{total}}, ou {{percent}}%.",
             newHandButtonLabel: "Nova Mao",
+            undoButtonLabel: "Desfazer",
             loadButtonLabel: "Carregar Mao",
             roundWind: "Vento da Rodada:",
             seatWind: "Vento do Assento:",

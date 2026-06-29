@@ -28,6 +28,7 @@ class UkeireQuiz extends React.Component {
         super(props);
         this.onSettingsChanged = this.onSettingsChanged.bind(this);
         this.onTileClicked = this.onTileClicked.bind(this);
+        this.onUndo = this.onUndo.bind(this);
         this.loadHand = this.onHandLoaded.bind(this);
         this.updateTime = this.onUpdateTime.bind(this);
         this.timerUpdate = null;
@@ -51,6 +52,7 @@ class UkeireQuiz extends React.Component {
                 totalOptimalDiscards: 0
             },
             history: [],
+            undoStack: [],
             isComplete: false,
             roundWind: 31,
             seatWind: 31,
@@ -184,6 +186,7 @@ class UkeireQuiz extends React.Component {
             achievedTotal: 0,
             possibleTotal: 0,
             history: history,
+            undoStack: [],
             isComplete: false,
             lastDraw: lastDraw || shuffle.pop(),
             roundWind: roundWind || this.pickRoundWind(),
@@ -347,6 +350,10 @@ class UkeireQuiz extends React.Component {
         let isComplete = this.state.isComplete;
         if (isComplete) return;
 
+        // Save a snapshot of the current state so this discard can be undone.
+        let undoStack = this.state.undoStack.slice();
+        undoStack.push(this.createUndoSnapshot());
+
         let chosenTile = parseInt(event.target.name);
         let hand = this.state.hand.slice();
         let remainingTiles = this.state.remainingTiles.slice();
@@ -451,12 +458,71 @@ class UkeireQuiz extends React.Component {
             achievedTotal: achievedTotal,
             possibleTotal: possibleTotal,
             history: history,
+            undoStack: undoStack,
             isComplete: isComplete,
             lastDraw: drawnTile,
             shuffle: shuffle,
             disclaimerSeen: true,
             currentTime: this.state.settings.time,
         }, isComplete ? () => this.saveStats() : undefined);
+    }
+
+    /**
+     * Captures the parts of the state that change when a tile is discarded, so they can be restored on undo.
+     * Arrays and player objects are deep-copied so later mutations don't affect the snapshot.
+     * @returns {object} A snapshot of the current game state.
+     */
+    createUndoSnapshot() {
+        return {
+            hand: this.state.hand.slice(),
+            tilePool: this.state.tilePool.slice(),
+            remainingTiles: this.state.remainingTiles.slice(),
+            players: this.state.players.map(player => {
+                let clone = Object.assign(Object.create(Object.getPrototypeOf(player)), player);
+                clone.hand = player.hand.slice();
+                clone.discards = player.discards.slice();
+                clone.calledTiles = player.calledTiles.slice();
+                clone.discardsAfterRiichi = player.discardsAfterRiichi.slice();
+                return clone;
+            }),
+            discardCount: this.state.discardCount,
+            optimalCount: this.state.optimalCount,
+            achievedTotal: this.state.achievedTotal,
+            possibleTotal: this.state.possibleTotal,
+            history: this.state.history.slice(),
+            isComplete: this.state.isComplete,
+            lastDraw: this.state.lastDraw,
+            shuffle: this.state.shuffle.slice(),
+            currentTime: this.state.currentTime,
+            currentBonus: this.state.currentBonus,
+            stats: { ...this.state.stats },
+        };
+    }
+
+    /** Reverts the most recent discard, restoring the previous game state. Does nothing on the first selection. */
+    onUndo() {
+        if (this.state.undoStack.length === 0) return;
+
+        if (this.timer != null) {
+            clearTimeout(this.timer);
+            clearInterval(this.timerUpdate);
+        }
+
+        let undoStack = this.state.undoStack.slice();
+        let snapshot = undoStack.pop();
+
+        // If the undone discard had completed the round, its stats were already saved; roll them back too.
+        if (this.state.isComplete && !snapshot.isComplete) {
+            try {
+                window.localStorage.setItem("stats", JSON.stringify(snapshot.stats));
+            } catch { }
+        }
+
+        this.setState({
+            ...snapshot,
+            undoStack: undoStack,
+            hasCopied: false,
+        });
     }
 
     onUpdateTime() {
@@ -610,6 +676,9 @@ class UkeireQuiz extends React.Component {
                 <Row className="mt-2">
                     <Col xs="6" sm="3" md="3" lg="2">
                         <Button className="btn-block" color={this.state.isComplete ? "success" : "warning"} onClick={() => this.onNewHand()}>{t("trainer.newHandButtonLabel")}</Button>
+                    </Col>
+                    <Col xs="6" sm="3" md="3" lg="2">
+                        <Button className="btn-block" color="secondary" onClick={this.onUndo} disabled={this.state.undoStack.length === 0}>{t("trainer.undoButtonLabel")}</Button>
                     </Col>
                     <CopyButton hand={this.state.hand} />
                     <LoadButton callback={this.loadHand} />

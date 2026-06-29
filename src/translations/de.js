@@ -39,6 +39,7 @@ export const de = {
             start: "Eine neue Hand wurde begonnen: {{hand}}",
             complete: "Deine Hand ist nun bereit. Glückwunsch! Deine Effizienz war {{achieved}}/{{total}}, bzw. {{percent}}%.",
             newHandButtonLabel: "Neue Hand",
+            undoButtonLabel: "Rückgängig",
             loadButtonLabel: "Hand eingeben",
             roundWind: "Rundenwind:",
             seatWind: "Platzwind:",
