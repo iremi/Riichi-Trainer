@@ -31,6 +31,20 @@ export function register(config) {
       return;
     }
 
+    // If a service worker already controls this page, reload once when a newly
+    // installed worker takes over (triggered by the SKIP_WAITING message below).
+    // This lets returning visitors get deployed updates on their next refresh
+    // instead of only after every tab for the page is closed. The controller
+    // check skips this on a first-ever visit, where activation isn't an update.
+    if (navigator.serviceWorker.controller) {
+      let refreshing = false;
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (refreshing) return;
+        refreshing = true;
+        window.location.reload();
+      });
+    }
+
     window.addEventListener('load', () => {
       const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
 
@@ -66,13 +80,12 @@ function registerValidSW(swUrl, config) {
         installingWorker.onstatechange = () => {
           if (installingWorker.state === 'installed') {
             if (navigator.serviceWorker.controller) {
-              // At this point, the updated precached content has been fetched,
-              // but the previous service worker will still serve the older
-              // content until all client tabs are closed.
-              console.log(
-                'New content is available and will be used when all ' +
-                  'tabs for this page are closed. See https://bit.ly/CRA-PWA.'
-              );
+              // The updated precached content has been fetched. Tell the waiting
+              // worker to activate immediately; the controllerchange listener
+              // above then reloads the page so the new content is used at once.
+              console.log('New content is available; activating and reloading.');
+
+              installingWorker.postMessage({ type: 'SKIP_WAITING' });
 
               // Execute callback
               if (config && config.onUpdate) {
