@@ -77,7 +77,7 @@ export const ja = {
             verbose: {
                 discard: "{{tile}}を捨てた結果、",
                 acceptance: "有効牌は{{count}}枚です。",
-                loweredShanten: " シャンテン数が上がり、テンパイから遠ざかってしまいました。",
+                loweredShanten: " <b>シャンテン数が上がり、</b>テンパイから遠ざかってしまいました。",
                 optimal: " 最も牌効率の良い捨て牌は",
                 optimalSpoiler: "{{tile}}で、",
                 best: " 今の捨て牌は、最大効率でした!",
@@ -103,6 +103,7 @@ export const ja = {
             sanma: "三麻",
             redFives: "赤五索の枚数:",
             verbose: "牌を省略表記する(\"一索\" を \"1s\" にする)",
+            tileImages: "牌譜に牌画像を表示する",
             showIndexes: "インデックスを表示",
             concise: "履歴を簡略表示",
             spoilers: "牌効率最大の選択が何だったか表示",

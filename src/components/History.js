@@ -23,6 +23,7 @@ class History extends React.Component {
                     data={historyObject}
                     spoilers={this.props.spoilers}
                     verbose={this.props.verbose}
+                    tileImages={this.props.tileImages}
                 />
             );
         });

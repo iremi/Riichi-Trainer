@@ -17,6 +17,7 @@ class Settings extends React.Component {
                 threePlayer: false,
                 redFives: 3,
                 verbose: true,
+                tileImages: true,
                 showIndexes: false,
                 extraConcise: false,
                 spoilers: true,
@@ -54,6 +55,7 @@ class Settings extends React.Component {
                     threePlayer: savedSettings.threePlayer,
                     redFives: savedSettings.redFives || 3,
                     verbose: savedSettings.verbose,
+                    tileImages: savedSettings.tileImages === undefined ? true : savedSettings.tileImages,
                     showIndexes: savedSettings.showIndexes,
                     extraConcise: savedSettings.extraConcise,
                     spoilers: savedSettings.spoilers,
@@ -157,6 +159,13 @@ class Settings extends React.Component {
                                 <Input className="form-check-input" type="checkbox" id="verbose"
                                     checked={this.state.settings.verbose} onChange={this.onSettingChanged} />
                                 <Label className="form-check-label" for="verbose">{t("settings.verbose")}</Label>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col className="form-check form-check-inline">
+                                <Input className="form-check-input" type="checkbox" id="tileImages"
+                                    checked={this.state.settings.tileImages} onChange={this.onSettingChanged} />
+                                <Label className="form-check-label" for="tileImages">{t("settings.tileImages")}</Label>
                             </Col>
                         </Row>
                         <Row>

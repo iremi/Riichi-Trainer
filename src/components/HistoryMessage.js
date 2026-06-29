@@ -1,6 +1,23 @@
 import React from 'react';
 import { ListGroupItem, Collapse, Row } from 'reactstrap';
 import { withTranslation } from 'react-i18next';
+import { getTileImage } from '../scripts/TileConversions';
+
+/**
+ * Renders a row of message text, turning <b>...</b> markers into bold elements and [[img:N]] markers
+ * into inline tile images. Handles nesting (e.g. a tile image inside a bold span).
+ */
+function renderRow(text) {
+    return text.split(/(<b>[\s\S]*?<\/b>|\[\[img:\d+\]\])/g).filter(part => part !== "").map((part, index) => {
+        let bold = part.match(/^<b>([\s\S]*)<\/b>$/);
+        if (bold) return <b key={index}>{renderRow(bold[1])}</b>;
+
+        let image = part.match(/^\[\[img:(\d+)\]\]$/);
+        if (image) return <img key={index} src={getTileImage(Number(image[1]))} alt="" style={{ height: "1.4em", verticalAlign: "text-bottom", margin: "0 0.1em" }} />;
+
+        return part;
+    });
+}
 
 class HistoryMessage extends React.Component {
     /* PROPS
@@ -24,8 +41,8 @@ class HistoryMessage extends React.Component {
         let { t } = this.props;
         if (!this.props.data) return <ListGroupItem></ListGroupItem>;
 
-        let message = this.props.data.getMessage(t, this.props.concise, this.props.verbose, this.props.spoilers);
-        let messageRows = message.split("<br/>").map((message, index) => <Row key={index}>{message}</Row>)
+        let message = this.props.data.getMessage(t, this.props.concise, this.props.verbose, this.props.spoilers, this.props.tileImages);
+        let messageRows = message.split("<br/>").map((row, index) => <Row key={index} style={index > 0 ? { marginTop: "0.35rem" } : undefined}><span>{renderRow(row)}</span></Row>)
 
         return (
             <Collapse isOpen={!this.state.collapsed}>
