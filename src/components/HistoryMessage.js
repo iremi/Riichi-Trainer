@@ -13,7 +13,7 @@ function renderRow(text) {
         if (bold) return <b key={index}>{renderRow(bold[1])}</b>;
 
         let image = part.match(/^\[\[img:(\d+)\]\]$/);
-        if (image) return <img key={index} src={getTileImage(Number(image[1]))} alt="" style={{ height: "1.4em", verticalAlign: "text-bottom", margin: "0 0.1em" }} />;
+        if (image) return <img key={index} src={getTileImage(Number(image[1]))} alt="" style={{ height: "2em", verticalAlign: "text-bottom", margin: "0 0.1em" }} />;
 
         return part;
     });
