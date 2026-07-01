@@ -8,9 +8,12 @@ import { getTileImage } from '../scripts/TileConversions';
  * into inline tile images. Handles nesting (e.g. a tile image inside a bold span).
  */
 function renderRow(text) {
-    return text.split(/(<b>[\s\S]*?<\/b>|\[\[img:\d+\]\])/g).filter(part => part !== "").map((part, index) => {
+    return text.split(/(<b>[\s\S]*?<\/b>|<c>[\s\S]*?<\/c>|\[\[img:\d+\]\])/g).filter(part => part !== "").map((part, index) => {
         let bold = part.match(/^<b>([\s\S]*)<\/b>$/);
         if (bold) return <b key={index}>{renderRow(bold[1])}</b>;
+
+        let chip = part.match(/^<c>([\s\S]*)<\/c>$/);
+        if (chip) return <span key={index} className="acceptanceCount">{renderRow(chip[1])}</span>;
 
         let image = part.match(/^\[\[img:(\d+)\]\]$/);
         if (image) return <img key={index} src={getTileImage(Number(image[1]))} alt="" style={{ height: "2em", verticalAlign: "text-bottom", margin: "0 0.1em" }} />;

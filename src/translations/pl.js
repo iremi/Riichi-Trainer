@@ -77,8 +77,8 @@ export const pl = {
             },
             verbose: {
                 discard: "Wybierasz odrzut {{tile}}, który",
-                acceptance: " daje {{count}} kamień ulepszający rękę.",
-                acceptance_plural: " daje {{count}} kamieni ulepszających rękę.",
+                acceptance: " daje <c>{{count}}</c> kamień ulepszający rękę.",
+                acceptance_plural: " daje <c>{{count}}</c> kamieni ulepszających rękę.",
                 loweredShanten: " zwiększa shanten. Oddalasz się od tenpai.",
                 optimal: " Najlepszy odrzut",
                 optimalSpoiler: ", {{tile}}, ",

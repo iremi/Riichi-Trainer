@@ -77,8 +77,8 @@ export const pt = {
             },
             verbose: {
                 discard: "Voce escolheu descartar o {{tile}}, que",
-                acceptance: " resulta em {{count}} peca que pode melhorar a mao.",
-                acceptance_plural: " resulta em {{count}} pecas que podem melhorar a mao.",
+                acceptance: " resulta em <c>{{count}}</c> peca que pode melhorar a mao.",
+                acceptance_plural: " resulta em <c>{{count}}</c> pecas que podem melhorar a mao.",
                 loweredShanten: " aumenta seu shanten - voce agora esta mais distante da mao pronta.",
                 optimal: " A peca mais eficiente de se descartar",
                 optimalSpoiler: ", o {{tile}}, ",

@@ -78,8 +78,8 @@ export const en = {
             },
             verbose: {
                 discard: "You chose to discard the {{tile}}, which",
-                acceptance: " results in {{count}} tile that can improve the hand:",
-                acceptance_plural: " results in {{count}} tiles that can improve the hand:",
+                acceptance: " results in <c>{{count}}</c> tile that can improve the hand:",
+                acceptance_plural: " results in <c>{{count}}</c> tiles that can improve the hand:",
                 tilesExpanded: " {{tiles}}.",
                 loweredShanten: " <b>increases your shanten</b> - you are now further from ready.",
                 optimal: " The most efficient tile to discard",

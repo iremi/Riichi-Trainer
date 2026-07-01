@@ -77,8 +77,8 @@ export const de = {
             },
             verbose: {
                 discard: "Du hast {{tile}} abgeworfen, sodass",
-                acceptance: " noch {{count}} Stein deine Hand verbessern kann.",
-                acceptance_plural: " noch {{count}} Steine deine Hand verbessern können.",
+                acceptance: " noch <c>{{count}}</c> Stein deine Hand verbessern kann.",
+                acceptance_plural: " noch <c>{{count}}</c> Steine deine Hand verbessern können.",
                 loweredShanten: " dein Shanten erhöht wurde - du bist jetzt weiter weg von einer bereiten Hand.",
                 optimal: " Der effizienteste Stein zum Abwerfen",
                 optimalSpoiler: ", die {{tile}}, ",

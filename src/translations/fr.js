@@ -77,8 +77,8 @@ export const fr = {
             },
             verbose: {
                 discard: "Vous avez choisi de défausser le {{tile}}, ce qui",
-                acceptance: " laisse {{count}} tuile pouvant améliorer votre main.",
-                acceptance_plural: " laisse {{count}} tuiles pouvant améliorer votre main.",
+                acceptance: " laisse <c>{{count}}</c> tuile pouvant améliorer votre main.",
+                acceptance_plural: " laisse <c>{{count}}</c> tuiles pouvant améliorer votre main.",
                 loweredShanten: " a abaissé votr shanten ; votre main est maintenant plus loin d'être prête.",
                 optimal: " La tuile la plus efficace à défausser",
                 optimalSpoiler: ", le {{tile}}, ",

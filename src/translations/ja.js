@@ -76,7 +76,7 @@ export const ja = {
             },
             verbose: {
                 discard: "{{tile}}を捨てた結果、",
-                acceptance: "有効牌は{{count}}枚です。",
+                acceptance: "有効牌は<c>{{count}}</c>枚です。",
                 loweredShanten: " <b>シャンテン数が上がり、</b>テンパイから遠ざかってしまいました。",
                 optimal: " 最も牌効率の良い捨て牌は",
                 optimalSpoiler: "{{tile}}で、",

@@ -76,7 +76,7 @@ export const ko = {
             },
             verbose: {
                 discard: "{{tile}}을(를) 타패하여, ",
-                acceptance: "유효패는 {{count}}개 입니다.",
+                acceptance: "유효패는 <c>{{count}}</c>개 입니다.",
                 loweredShanten: " 샹텐 수가 올라가 텐파이에서 멀어졌습니다.",
                 optimal: " 가장 효율적인 타패는",
                 optimalSpoiler: " {{tile}}(으)로, ",

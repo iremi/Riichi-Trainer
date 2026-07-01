@@ -647,12 +647,9 @@ class UkeireQuiz extends React.Component {
         let blind = this.state.players.length && this.state.players[0].discards.length && this.state.settings.blind && !this.state.isComplete;
 
         return (
-            <Container>
+            <Container fluid className="trainer-container">
                 <Settings onChange={this.onSettingsChanged} />
                 <StatsDisplay values={this.state.stats} onReset={() => this.resetStats()} />
-                <Row>
-                    {this.state.disclaimerSeen ? "" : <span>{t("trainer.disclaimer")}</span>}
-                </Row>
                 <ValueTileDisplay roundWind={this.state.roundWind} seatWind={this.state.seatWind} dora={this.state.dora} showIndexes={this.state.settings.showIndexes} />
                 <Row className="mb-2 mt-2">
                     <span>{t("trainer.instructions")}</span>

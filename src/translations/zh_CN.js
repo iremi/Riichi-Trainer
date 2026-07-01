@@ -78,8 +78,8 @@ export const zh_CN = {
             },
             verbose: {
                 discard: "你选择打{{tile}}，",
-                acceptance: "结果是有{{count}}张牌可以改善手牌向听数：",
-                acceptance_plural: "结果是有{{count}}张牌可以改善手牌向听数：",
+                acceptance: "结果是有<c>{{count}}</c>张牌可以改善手牌向听数：",
+                acceptance_plural: "结果是有<c>{{count}}</c>张牌可以改善手牌向听数：",
                 tilesExpanded: " {{tiles}}。",
                 loweredShanten: "向听数增加 - 你离听牌更远了。",
                 optimal: "最佳舍牌是",
