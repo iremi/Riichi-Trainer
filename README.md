@@ -1,4 +1,4 @@
-> **Note:** This is a fork of the original [Riichi-Trainer by Euophrys](https://github.com/Euophrys/Riichi-Trainer). It adds some extra features (such as the Undo button and tile images in the hand history) on top of the original project. All credit for the underlying trainer goes to the original author and contributors.
+> **Note:** This is a fork of the original [Riichi-Trainer by Euophrys](https://github.com/Euophrys/Riichi-Trainer). It adds some extra features (such as the Undo button, tile images in the hand history, and a mobile-friendly layout) on top of the original project. All credit for the underlying trainer goes to the original author and contributors.
 
 If you're looking to contribute, translations or otherwise, please see the [contributing guidelines](https://github.com/Euophrys/Riichi-Trainer/blob/develop/CONTRIBUTING.md) for instructions.
 
@@ -14,11 +14,15 @@ The main Trainer tab now has an **Undo** button next to "New Hand". It steps bac
 
 The button is disabled on the first selection of a hand (there is nothing to undo) and resets whenever a new hand starts. If the undone discard had completed the round, the stats that were saved for that completion are rolled back as well. The label is translated in all supported languages.
 
-## Tile images in hand history (Efficiency Trainer)
+## Hand history (Efficiency Trainer)
 
-The hand history messages are laid out across three rows — your discard and its result, the most efficient discard, and the tile you drew — with the key part of each row in bold.
+The hand history messages are laid out across three rows — your discard and its result, the most efficient discard, and the tile you drew. The number of tiles that improve the hand is highlighted in a small outlined pill so it stands out at a glance. Each result reads as a single clean sentence (the long list of accepting tiles was removed). When a hand is completed, the **"Congratulations! Your efficiency was …"** summary appears on its own bold row.
 
-A setting, **"Show tile images in hand history"** (in the Trainer's Settings, under "Verbose tile names"), is **on by default**. When enabled, the discarded tile, the suggested tile, and the drawn tile are shown as inline tile images instead of text; the lists of tiles that improve the hand stay as text either way. Turning the setting off reverts to a plain text-only history.
+A setting, **"Show tile images in hand history"** (in the Trainer's Settings, under "Verbose tile names"), is **on by default**. When enabled, the discarded tile, the suggested tile, and the drawn tile are shown as inline tile images instead of text. Turning the setting off reverts to a plain text-only history.
+
+## Mobile layout (Efficiency Trainer)
+
+On phones — including landscape — the Trainer uses the full screen width so the hand tiles are as large and tappable as possible while still fitting all 13/14 tiles on a single row; on narrow screens the tiles are stretched slightly taller for legibility. On desktop the layout keeps its original fixed width. The efficiency-trainer disclaimer text block was removed.
 
 # For Programmers:
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). Make sure to run `npm install`, everyone's favourite command.
