@@ -37,7 +37,7 @@ export const de = {
             disclaimer: "Achtung: Dieser Trainer hilft zu lernen, die Effizienz der Hand im aktuellen Zug zu optimieren. Er berücksichtigt nicht die Effizienz zukünftiger Züge, ob es besser wäre, die Effizienz zu ignorieren, oder wie man den Wert der Hand maximiert. Dieser Trainer repräsentiert also nur für manche Hände die ideale Spielweise. Starke Spieler spielen nicht immer so, können es aber prinzipiell. Weiterführendes Lesen hilft dabei, derartige strategische Entscheidungen zu lernen. In den Einstellungen sind Optionen für gezielteres Training zu finden.",
             instructions: "Klicke den Stein an, den du abwerfen möchtest.",
             start: "Eine neue Hand wurde begonnen: {{hand}}",
-            complete: "Deine Hand ist nun bereit. Glückwunsch! Deine Effizienz war {{achieved}}/{{total}}, bzw. {{percent}}%.",
+            complete: "Deine Hand ist nun bereit.<br/><b>Glückwunsch! Deine Effizienz war {{achieved}}/{{total}}, bzw. {{percent}}%.</b>",
             newHandButtonLabel: "Neue Hand",
             undoButtonLabel: "Rückgängig",
             loadButtonLabel: "Hand eingeben",

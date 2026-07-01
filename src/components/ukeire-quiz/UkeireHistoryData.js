@@ -21,39 +21,29 @@ export default class UkeireHistoryData extends HistoryData {
         let mode = "verbose";
         if (concise) mode = "concise";
 
-        // The single highlighted tiles (discarded, suggested, drawn) become images when enabled; the
-        // acceptance lists always stay as text names.
+        // The single highlighted tiles (discarded, suggested, drawn) become images when enabled.
         let tileLabel = (tile) => tileImages ? `[[img:${tile}]]` : getTileAsText(t, tile, verbose);
-        let tileList = (tiles) => tiles.map((tile) => getTileAsText(t, tile, verbose)).join(", ");
 
-        // Row 1: the player's own discard and its result. The explanatory lead-in (including the
-        // discarded tile) is bolded; the tile list that follows is not.
+        // Row 1: the player's own discard and its result.
         let discard = t(`history.${mode}.discard`, { tile: tileLabel(this.chosenTile) });
         let result;
 
         if (this.chosenUkeire.value > 0 || this.shanten === 0) {
-            result = "<b>" + discard + t(`history.${mode}.acceptance`, { count: this.chosenUkeire.value }) + "</b>";
-            result += t(`history.${mode}.tilesExpanded`, { tiles: tileList(this.chosenUkeire.tiles) });
+            result = discard + t(`history.${mode}.acceptance`, { count: this.chosenUkeire.value });
         }
         else {
-            // Bold the discard clause here; the loweredShanten string carries its own <b> markers for
-            // the clause that should stay bold, since that boundary differs per language.
-            result = "<b>" + discard + "</b>" + t(`history.${mode}.loweredShanten`);
+            result = discard + t(`history.${mode}.loweredShanten`);
         }
 
-        // Row 2: the most efficient discard. The lead-in (down to the tile count) is bolded; the tile list is not.
+        // Row 2: the most efficient discard.
         if (this.chosenUkeire.value < this.bestUkeire.value) {
-            result += "<br/><b>" + t(`history.${mode}.optimal`);
+            result += "<br/>" + t(`history.${mode}.optimal`);
 
             if (spoilers) {
-                result += t(`history.${mode}.optimalSpoiler`, { tile: tileLabel(this.bestTile), tiles: tileList(this.bestUkeire.tiles) });
+                result += t(`history.${mode}.optimalSpoiler`, { tile: tileLabel(this.bestTile) });
             }
 
-            result += t(`history.${mode}.acceptance`, { count: this.bestUkeire.value }) + "</b>";
-
-            if (spoilers) {
-                result += t(`history.${mode}.tilesExpanded`, { tiles: tileList(this.bestUkeire.tiles) });
-            }
+            result += t(`history.${mode}.acceptance`, { count: this.bestUkeire.value });
         }
         else {
             result += t(`history.${mode}.best`);
@@ -74,9 +64,9 @@ export default class UkeireHistoryData extends HistoryData {
         // Row 3: what was drawn for the next turn, on its own line.
         if (this.shanten > 0) {
             if (this.drawnTile === -1) {
-                result += "<br/><b>" + t(`history.${mode}.exhausted`) + "</b>";
+                result += "<br/>" + t(`history.${mode}.exhausted`);
             } else {
-                result += "<br/><b>" + t(`history.${mode}.draw`, { tile: tileLabel(this.drawnTile) }) + "</b>";
+                result += "<br/>" + t(`history.${mode}.draw`, { tile: tileLabel(this.drawnTile) });
             }
         }
 
