@@ -29,6 +29,15 @@ i18n
     },
     fallbackLng: "en",
 
+    // Default to English rather than the device/browser language. We only read a
+    // previously saved choice (from the language dropdown) and otherwise fall
+    // back to English, so a first-time visitor always starts in English instead
+    // of an auto-detected language.
+    detection: {
+      order: ["localStorage"],
+      caches: ["localStorage"]
+    },
+
     ns: ["translations"],
     defaultNS: "translations",
     keySeparator: '.',
