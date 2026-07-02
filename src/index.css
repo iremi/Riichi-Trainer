@@ -29,13 +29,17 @@
 /* On phones the hand is a single row, so tile width is capped at ~1/14 of the
    screen, but vertical space is plentiful. Stretch tiles slightly taller
    (natural 3:4 -> 2:3) so the art is more legible and tappable. The stretch is
-   mild enough to stay close to true proportions. */
+   mild enough to stay close to true proportions.
+
+   The aspect ratio is applied to the tile IMAGE (with height:auto) rather than
+   its flex container, so each tile's height is derived from its own width. If
+   it were on the container, a flex row's align-items:stretch could leave the
+   container taller after an iOS Safari orientation change and the image would
+   stretch to that stale height. */
 @media (max-width: 500px) {
-    .handTile {
-        aspect-ratio: 2 / 3;
-    }
     .handTile .tile {
-        height: 100%;
+        height: auto;
+        aspect-ratio: 2 / 3;
         object-fit: fill;
     }
 }
