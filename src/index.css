@@ -78,6 +78,33 @@
     line-height: 1.35;
 }
 
+/* Top navigation bar: use the full width on mobile so all the buttons
+   (nav tabs + Language + Settings + Statistics) can fit on a single row,
+   while keeping the original centered width on desktop. */
+.main-nav {
+    max-width: none;
+}
+
+@media (min-width: 992px) {
+    .main-nav {
+        max-width: 960px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+@media (min-width: 1200px) {
+    .main-nav {
+        max-width: 1140px;
+    }
+}
+
+/* Compact the nav buttons so the whole bar fits on one row on smaller screens. */
+.main-nav .btn {
+    padding: 0.3rem 0.5rem;
+    font-size: 0.85rem;
+}
+
 .tenhouLink {
     color: #0000EE;
 }

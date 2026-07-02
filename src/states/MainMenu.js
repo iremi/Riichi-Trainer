@@ -70,8 +70,8 @@ class MainMenu extends React.Component {
 
         return (
             <React.Fragment>
-                <Container className="mb-4">
-                    <Row>
+                <Container fluid className="mb-4 main-nav">
+                    <Row className="justify-content-center">
                         <Button color="success" xs="4" disabled={this.state.active === STATES.UKEIRE} onClick={() => this.onSetActivePage(STATES.UKEIRE)}>{t("menu.trainer")}</Button>
                         <Button xs="4" disabled={this.state.active === STATES.REPLAY} onClick={() => this.onSetActivePage(STATES.REPLAY)}>{t("menu.analyzer")}</Button>
                         <Button xs="4" disabled={this.state.active === STATES.SOUTH_FOUR} onClick={() => this.onSetActivePage(STATES.SOUTH_FOUR)}>{t("menu.allLast")}</Button>
@@ -79,8 +79,9 @@ class MainMenu extends React.Component {
                         <Button xs="4" disabled={this.state.active === STATES.EXPLORER} onClick={() => this.onSetActivePage(STATES.EXPLORER)}>{t("menu.explorer")}</Button>
                         <Button xs="4" disabled={this.state.active === STATES.SHANTEN} onClick={() => this.onSetActivePage(STATES.SHANTEN)}>{t("menu.shanten")}</Button>
                         <Button xs="4" disabled={this.state.active === STATES.UTILS} onClick={() => this.onSetActivePage(STATES.UTILS)}>{t("menu.utils")}</Button>
-                    </Row>
-                    <Row>
+                        {/* Portal target: the Trainer's Statistics and Settings buttons render here so
+                            they sit in the top row alongside the navigation and language controls. */}
+                        <div id="trainer-toolbar" style={{ display: "contents" }} />
                         <Dropdown isOpen={this.state.dropdownOpen} toggle={() => this.toggleDropdown()}>
                             <DropdownToggle caret>
                                 🌐 {t("menu.language")}

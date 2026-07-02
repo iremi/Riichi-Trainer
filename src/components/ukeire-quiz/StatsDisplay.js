@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { Container, Collapse, Card, CardBody, Button, Row, Col } from 'reactstrap';
 import { withTranslation } from 'react-i18next';
 
@@ -9,8 +10,14 @@ class StatsDisplay extends React.Component {
         this.toggleConfirm = this.toggleConfirm.bind(this);
         this.state = {
             statsCollapsed: true,
-            confirmCollapsed: true
+            confirmCollapsed: true,
+            mounted: false
         };
+    }
+
+    componentDidMount() {
+        // Enables the portal render once the toolbar slot exists in the DOM.
+        this.setState({ mounted: true });
     }
 
     toggleStats() {
@@ -38,9 +45,14 @@ class StatsDisplay extends React.Component {
 
         let { t } = this.props;
 
+        // Render the toggle button up in the top navigation row (via portal) while
+        // keeping the stats panel here below the navigation.
+        const button = <Button color="primary" onClick={this.toggleStats}>{t("stats.buttonLabel")}</Button>;
+        const toolbar = this.state.mounted ? document.getElementById("trainer-toolbar") : null;
+
         return (
             <Container>
-                <Button color="primary" onClick={this.toggleStats}>{t("stats.buttonLabel")}</Button>
+                {toolbar ? ReactDOM.createPortal(button, toolbar) : button}
                 <Collapse isOpen={!this.state.statsCollapsed}>
                     <Card><CardBody>
                         <Row>

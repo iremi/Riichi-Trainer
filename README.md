@@ -1,4 +1,4 @@
-> **Note:** This is a fork of the original [Riichi-Trainer by Euophrys](https://github.com/Euophrys/Riichi-Trainer). It adds some extra features (such as the Undo button, tile images in the hand history, and a mobile-friendly layout) on top of the original project. All credit for the underlying trainer goes to the original author and contributors.
+> **Note:** This is a fork of the original [Riichi-Trainer by Euophrys](https://github.com/Euophrys/Riichi-Trainer). Its focus is a **mobile-first experience**: the trainer can be **installed to your home screen as an app**, and its layout is **optimized for phones**. On top of that it adds several quality-of-life features — an Undo button, tile images and a cleaner hand history, and a single compact top navigation row. All credit for the underlying trainer goes to the original author and contributors.
 
 If you're looking to contribute, translations or otherwise, please see the [contributing guidelines](https://github.com/Euophrys/Riichi-Trainer/blob/develop/CONTRIBUTING.md) for instructions.
 
@@ -7,6 +7,19 @@ This is a collection of tools designed to improve the play of Riichi Mahjong pla
 When referring to efficiency here, we're referring to ukeire, which is the tile acceptance of the hand in the present. There's no look-ahead for future efficiency. Ukeire is an easily measurable thing, and playing towards ukeire is sufficient for many players when combined with adequate defensive play. These tools are primarily aimed at people below Tokujou on Tenhou, and most Mahjong Soul players.
 
 See the [itch.io page](https://euophrys.itch.io/mahjong-efficiency-trainer) for more information.
+
+## Install it as an app (Add to Home Screen)
+
+This fork is a full [Progressive Web App](https://web.dev/progressive-web-apps/), so you can install it to your phone's home screen (or your desktop) and launch it like a native app — no app store needed. In Chrome/Edge on Android, use the browser menu's **"Install app" / "Add to Home Screen"** option (or the install icon in the desktop address bar); on iOS Safari, tap **Share → "Add to Home Screen"**. Once installed it opens full-screen in its own window.
+
+## Mobile-first layout
+
+The Efficiency Trainer's layout is optimized for phones:
+
+- On phones — including landscape — the hand uses the **full screen width** so the tiles are as large and tappable as possible, while still keeping all 13/14 tiles on a **single row**. On narrow screens the tiles are stretched slightly taller for legibility.
+- The top navigation (Trainer, Analyzer, …) plus **Language, Settings, and Statistics** are gathered into a single compact, centered row that fits on one line on landscape phones and desktop.
+- On desktop the content keeps its original fixed, centered width.
+- The efficiency-trainer disclaimer text block was removed to save vertical space.
 
 ## Undo button (Efficiency Trainer)
 
@@ -19,10 +32,6 @@ The button is disabled on the first selection of a hand (there is nothing to und
 The hand history messages are laid out across three rows — your discard and its result, the most efficient discard, and the tile you drew. The number of tiles that improve the hand is highlighted in a small outlined pill so it stands out at a glance. Each result reads as a single clean sentence (the long list of accepting tiles was removed). When a hand is completed, the **"Congratulations! Your efficiency was …"** summary appears on its own bold row.
 
 A setting, **"Show tile images in hand history"** (in the Trainer's Settings, under "Verbose tile names"), is **on by default**. When enabled, the discarded tile, the suggested tile, and the drawn tile are shown as inline tile images instead of text. Turning the setting off reverts to a plain text-only history.
-
-## Mobile layout (Efficiency Trainer)
-
-On phones — including landscape — the Trainer uses the full screen width so the hand tiles are as large and tappable as possible while still fitting all 13/14 tiles on a single row; on narrow screens the tiles are stretched slightly taller for legibility. On desktop the layout keeps its original fixed width. The efficiency-trainer disclaimer text block was removed.
 
 # For Programmers:
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). Make sure to run `npm install`, everyone's favourite command.

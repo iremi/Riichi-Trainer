@@ -648,8 +648,8 @@ class UkeireQuiz extends React.Component {
 
         return (
             <Container fluid className="trainer-container">
-                <Settings onChange={this.onSettingsChanged} />
                 <StatsDisplay values={this.state.stats} onReset={() => this.resetStats()} />
+                <Settings onChange={this.onSettingsChanged} />
                 <ValueTileDisplay roundWind={this.state.roundWind} seatWind={this.state.seatWind} dora={this.state.dora} showIndexes={this.state.settings.showIndexes} />
                 <Row className="mb-2 mt-2">
                     <span>{t("trainer.instructions")}</span>

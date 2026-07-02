@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { Container, Collapse, Card, CardBody, Button, Row, Col, Input, Label } from 'reactstrap';
 import NumericInput from 'react-numeric-input';
 import { withTranslation } from "react-i18next";
@@ -9,6 +10,7 @@ class Settings extends React.Component {
         this.toggle = this.toggle.bind(this);
         this.state = {
             collapsed: true,
+            mounted: false,
             settings: {
                 characters: true,
                 bamboo: true,
@@ -42,6 +44,9 @@ class Settings extends React.Component {
     }
 
     componentDidMount() {
+        // Enables the portal render once the toolbar slot exists in the DOM.
+        this.setState({ mounted: true });
+
         try {
             let savedSettings = window.localStorage.getItem("settings");
             if (savedSettings) {
@@ -109,9 +114,13 @@ class Settings extends React.Component {
 
     render() {
         const { t } = this.props;
+        // Render the toggle button up in the top navigation row (via portal) while
+        // keeping the settings panel here below the navigation.
+        const button = <Button color="primary" onClick={this.toggle}>{t("settings.buttonLabel")}</Button>;
+        const toolbar = this.state.mounted ? document.getElementById("trainer-toolbar") : null;
         return (
             <Container>
-                <Button color="primary" onClick={this.toggle}>{t("settings.buttonLabel")}</Button>
+                {toolbar ? ReactDOM.createPortal(button, toolbar) : button}
                 <Collapse isOpen={!this.state.collapsed}>
                     <Card><CardBody>
                         <Row>
