@@ -29,6 +29,7 @@ class Settings extends React.Component {
                 minShanten: 0,
                 sort: true,
                 blind: false,
+                progressBar: false,
                 tilesInHand: 14,
                 useTimer: false,
                 time: 5,
@@ -70,6 +71,7 @@ class Settings extends React.Component {
                     minShanten: savedSettings.minShanten || 0,
                     sort: savedSettings.sort === undefined ? true : savedSettings.sort,
                     blind: savedSettings.blind,
+                    progressBar: savedSettings.progressBar === undefined ? false : savedSettings.progressBar,
                     tilesInHand: savedSettings.tilesInHand || 14,
                     useTimer: savedSettings.useTimer,
                     time: savedSettings.time || 5,
@@ -248,6 +250,13 @@ class Settings extends React.Component {
                                 <Input className="form-check-input" type="checkbox" id="blind"
                                     checked={this.state.settings.blind} onChange={this.onSettingChanged} />
                                 <Label className="form-check-label" for="blind">{t("settings.blind")}</Label>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col className="form-check form-check-inline">
+                                <Input className="form-check-input" type="checkbox" id="progressBar"
+                                    checked={this.state.settings.progressBar} onChange={this.onSettingChanged} />
+                                <Label className="form-check-label" for="progressBar">{t("settings.progressBar")}</Label>
                             </Col>
                         </Row>
                         <Row>

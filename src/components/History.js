@@ -24,6 +24,7 @@ class History extends React.Component {
                     spoilers={this.props.spoilers}
                     verbose={this.props.verbose}
                     tileImages={this.props.tileImages}
+                    progressBar={this.props.progressBar}
                 />
             );
         });

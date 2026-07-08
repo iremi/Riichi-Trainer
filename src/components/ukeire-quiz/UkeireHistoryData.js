@@ -17,7 +17,7 @@ export default class UkeireHistoryData extends HistoryData {
         this.drawnTile = drawnTile;
     }
 
-    getMessage(t, concise, verbose, spoilers, tileImages) {
+    getMessage(t, concise, verbose, spoilers, tileImages, progressBar) {
         let mode = "verbose";
         if (concise) mode = "concise";
 
@@ -47,6 +47,11 @@ export default class UkeireHistoryData extends HistoryData {
         }
         else {
             result += t(`history.${mode}.best`);
+        }
+
+        // Progress bar visualising the chosen discard's ukeire relative to the best possible.
+        if (progressBar && mode === "verbose" && this.bestUkeire.value > 0) {
+            result += "<br/>[[bar:" + Math.max(0, this.chosenUkeire.value) + "/" + this.bestUkeire.value + "]]";
         }
 
         if (this.shanten <= 0 && this.handUkeire.value === 0) {

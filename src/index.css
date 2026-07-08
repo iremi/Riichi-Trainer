@@ -82,6 +82,38 @@
     line-height: 1.35;
 }
 
+/* Ukeire progress bar: shows the chosen discard's acceptance relative to the
+   best possible (e.g. 12 / 24 = half full). Neutral light fill on a translucent
+   track so it reads on the green/yellow/red history rows; the numeric label
+   keeps it legible without relying on color. */
+.ukeireBar {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 0.6em;
+    margin-top: 0.25rem;
+}
+
+.ukeireBar-track {
+    flex: 1;
+    height: 0.7em;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.22);
+    overflow: hidden;
+}
+
+.ukeireBar-fill {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.92);
+}
+
+.ukeireBar-label {
+    font-weight: bold;
+    white-space: nowrap;
+}
+
 /* Top navigation bar: use the full width on mobile so all the buttons
    (nav tabs + Language + Settings + Statistics) can fit on a single row,
    while keeping the original centered width on desktop. */
