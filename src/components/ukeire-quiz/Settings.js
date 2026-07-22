@@ -26,7 +26,10 @@ class Settings extends React.Component {
                 reshuffle: true,
                 simulate: false,
                 exceptions: true,
-                minShanten: 0,
+                // 0 means "any shanten" (no filtering); otherwise deal exactly this shanten.
+                // Tenpai is unreachable from a random deal, so 0 is free to act as the sentinel.
+                // Defaults to 2: that is where efficiency decisions carry the most weight.
+                targetShanten: 2,
                 sort: true,
                 blind: false,
                 progressBar: false,
@@ -68,7 +71,9 @@ class Settings extends React.Component {
                     reshuffle: savedSettings.reshuffle,
                     simulate: savedSettings.simulate,
                     exceptions: savedSettings.exceptions,
-                    minShanten: savedSettings.minShanten || 0,
+                    // Not `||`: 0 ("any") is a deliberate choice that must survive a reload,
+                    // while an absent value should fall back to the default of 2.
+                    targetShanten: savedSettings.targetShanten === undefined ? 2 : savedSettings.targetShanten,
                     sort: savedSettings.sort === undefined ? true : savedSettings.sort,
                     blind: savedSettings.blind,
                     progressBar: savedSettings.progressBar === undefined ? false : savedSettings.progressBar,
@@ -223,11 +228,13 @@ class Settings extends React.Component {
                         </Row>
                         <Row>
                             <Col className="form-check form-check-inline">
-                                <Label className="form-check-label" for="minShanten">{t("settings.minShanten")}&nbsp;</Label>
-                                <NumericInput className="form-check-input" type="number" id="minShanten"
+                                <Label className="form-check-label" for="targetShanten">{t("settings.targetShanten")}&nbsp;</Label>
+                                <NumericInput className="form-check-input" type="number" id="targetShanten"
                                     min={0} max={4} step={1}
-                                    value={this.state.settings.minShanten} onChange={this.onSettingChanged} />
-                                <span className="blackText">&nbsp;{t("settings.minShantenLimit")}</span>
+                                    format={(value) => Number(value) > 0 ? String(value) : t("settings.targetShantenAny")}
+                                    parse={(stringValue) => stringValue === t("settings.targetShantenAny") ? 0 : parseInt(stringValue, 10)}
+                                    value={this.state.settings.targetShanten} onChange={this.onSettingChanged} />
+                                <span className="blackText">&nbsp;{t("settings.targetShantenHint")}</span>
                             </Col>
                         </Row>
                         <Row>

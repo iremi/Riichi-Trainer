@@ -49,7 +49,8 @@ export const en = {
             error: {
                 load: "Error: Couldn't understand provided hand",
                 wallEmpty: "Error: Not enough tiles to make a hand.",
-                wallEmptyShuffle: "There aren't enough tiles left in the wall to make a new hand. Shuffling."
+                wallEmptyShuffle: "There aren't enough tiles left in the wall to make a new hand. Shuffling.",
+                noHandInShantenRange: "Couldn't find a hand in the requested shanten range, so the closest one was dealt. Try widening the range."
             },
             playerNames: {
                 you: "You",
@@ -116,8 +117,9 @@ export const en = {
             shuffle: "Shuffle discarded tiles back into the wall after starting a new hand",
             simulate: "Simulate other players discarding tiles",
             exceptions: "Consider exception hands (Kokushi/Thirteen Orphans and Chiitoitsu/Seven Pairs)",
-            minShanten: "Minimum starting hand shanten:",
-            minShantenLimit: "(up to the number of allowed suits)",
+            targetShanten: "Starting hand shanten:",
+            targetShantenAny: "Any",
+            targetShantenHint: "(deal only hands at this exact shanten)",
             sort: "Sort hand",
             blind: "Conceal hand tiles",
             progressBar: "Show an efficiency progress bar in the hand history",

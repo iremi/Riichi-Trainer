@@ -33,6 +33,16 @@ The hand history messages are laid out across three rows — your discard and it
 
 A setting, **"Show tile images in hand history"** (in the Trainer's Settings, under "Verbose tile names"), is **on by default**. When enabled, the discarded tile, the suggested tile, and the drawn tile are shown as inline tile images instead of text. Turning the setting off reverts to a plain text-only history.
 
+An optional setting, **"Show an efficiency progress bar in the hand history"** (**off by default**), adds a bar to each entry filled to your discard's acceptance relative to the best possible (e.g. 12 / 24 = half full), so you can see at a glance how close to optimal each choice was.
+
+## Starting hand shanten (Efficiency Trainer)
+
+**"Starting hand shanten"** (in the Trainer's Settings) controls how developed the dealt hand is, and **defaults to 2**. Set it to `Any` for unfiltered hands, or to 1–4 to drill one exact shanten.
+
+Two shanten is the default because that is where tile efficiency matters most: at 3–4 shanten the discards are largely automatic, and at 1-shanten or tenpai the options are already constrained, whereas at 2-shanten you are choosing which blocks to keep — the choices are non-obvious and they decide whether the hand gets there. Left unfiltered, only ~19% of random deals start at 2 shanten (roughly 43% start at 3 and 30% at 4), so most hands would be spent on low-value decisions before reaching the interesting one.
+
+Hands are found by generating until one matches, which is capped so an unreachable request cannot hang the browser; if nothing matches, the closest hand is dealt and a note appears in the history. The filter uses the same shanten definition the trainer scores discards with, so it honours the "Consider exception hands" setting.
+
 # For Programmers:
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). Make sure to run `npm install`, everyone's favourite command.
 

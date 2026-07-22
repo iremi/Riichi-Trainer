@@ -9,6 +9,12 @@ export const ALL_TILES_REMAINING = [
 /** @readonly Array of characters representing each suit. */
 export const SUIT_CHARACTERS = ["m", "p", "s", "z"];
 
+/**
+ * @readonly The highest shanten the starting-hand filter treats as a real limit.
+ * Used as the "no maximum" sentinel for the maximum starting hand shanten setting.
+ */
+export const MAX_HAND_SHANTEN = 6;
+
 /** @readonly Array of indexes to show on the tiles. */
 export const TILE_INDEXES = [
     5, 1, 2, 3, 4, 5, 6, 7, 8, 9,

@@ -1,5 +1,6 @@
 import { removeRandomItem } from "./Utils";
 import { convertHandToTileIndexArray } from "./HandConversions";
+import { MAX_HAND_SHANTEN } from "../Constants";
 
 /**
  * Generates a random hand of the specified number of tiles.
@@ -29,6 +30,50 @@ export function generateHand(remainingTiles, handSize = 14) {
         availableTiles,
         tilePool
     };
+}
+
+/**
+ * Generates a random hand whose shanten falls within the given range, by generating
+ * hands until one qualifies (rejection sampling).
+ *
+ * Low targets (such as requiring tenpai) are rare enough that they may never be hit, so
+ * the number of attempts is capped. When the cap is reached, the closest hand that was
+ * seen is returned with `fellBack` set, rather than looping forever.
+ *
+ * @param {TileCounts} remainingTiles The number of each tile in the wall.
+ * @param {number} handSize The number of tiles in the hand.
+ * @param {number} minShanten The lowest acceptable shanten.
+ * @param {number} maxShanten The highest acceptable shanten. At MAX_HAND_SHANTEN or above
+ *                            there is no upper limit, which preserves the original behaviour.
+ * @param {(hand: TileCounts) => number} shantenFunction The shanten function to filter with.
+ * @param {number} maxAttempts How many hands to try before giving up.
+ */
+export function generateHandInShantenRange(remainingTiles, handSize, minShanten, maxShanten, shantenFunction, maxAttempts = 400) {
+    let hasUpperLimit = maxShanten < MAX_HAND_SHANTEN;
+    let closest;
+    let closestDistance = Infinity;
+
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
+        let result = generateHand(remainingTiles, handSize);
+
+        // Not enough tiles left in the wall - the caller handles this case.
+        if (!result.hand) return { ...result, shanten: undefined, fellBack: false };
+
+        let shanten = shantenFunction(result.hand);
+
+        if (shanten >= minShanten && (!hasUpperLimit || shanten <= maxShanten)) {
+            return { ...result, shanten, fellBack: false };
+        }
+
+        // Remember the near miss in case no hand in range turns up.
+        let distance = shanten < minShanten ? minShanten - shanten : shanten - maxShanten;
+        if (distance < closestDistance) {
+            closestDistance = distance;
+            closest = { ...result, shanten };
+        }
+    }
+
+    return { ...closest, fellBack: true };
 }
 
 /**

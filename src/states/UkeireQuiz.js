@@ -8,7 +8,7 @@ import LoadButton from '../components/LoadButton';
 import DiscardPool from "../components/DiscardPool";
 import ValueTileDisplay from "../components/ValueTileDisplay";
 import StatsDisplay from "../components/ukeire-quiz/StatsDisplay";
-import { generateHand, fillHand } from '../scripts/GenerateHand';
+import { generateHandInShantenRange, fillHand } from '../scripts/GenerateHand';
 import { calculateDiscardUkeire, calculateUkeireFromOnlyHand } from "../scripts/UkeireCalculator";
 import { calculateMinimumShanten, calculateStandardShanten } from "../scripts/ShantenCalculator";
 import { convertRedFives } from "../scripts/TileConversions";
@@ -17,7 +17,7 @@ import { evaluateBestDiscard } from "../scripts/Evaluations";
 import { shuffleArray, removeRandomItem, getRandomItem } from '../scripts/Utils';
 import SortedHand from '../components/SortedHand';
 import Player from '../models/Player';
-import { PLAYER_NAMES } from '../Constants';
+import { PLAYER_NAMES, MAX_HAND_SHANTEN } from '../Constants';
 import { withTranslation } from 'react-i18next';
 import LocalizedMessage from '../models/LocalizedMessage';
 import UkeireHistoryData from '../components/ukeire-quiz/UkeireHistoryData';
@@ -222,16 +222,15 @@ class UkeireQuiz extends React.Component {
         let dora = 1;
         let hand, availableTiles, tilePool;
 
-        let minShanten = this.state.settings.minShanten;
-        minShanten = Math.max(0, minShanten);
+        // "Any" (0) leaves generation unfiltered; otherwise deal exactly that shanten.
+        let targetShanten = this.state.settings.targetShanten || 0;
 
-        // Count how many suits are currently enabled.
-        let allowedSuits = +this.state.settings.honors
-            + +this.state.settings.bamboo
-            + +this.state.settings.characters
-            + +this.state.settings.circles;
+        let minShanten = targetShanten > 0 ? targetShanten : 0;
+        let maxShanten = targetShanten > 0 ? targetShanten : MAX_HAND_SHANTEN;
 
-        minShanten = Math.min(minShanten, allowedSuits);
+        // Filter on the same shanten definition the discards are scored with, so the
+        // requested shanten matches what the trainer reports.
+        let generationShantenFunction = this.state.settings.exceptions ? calculateMinimumShanten : calculateStandardShanten;
 
         if (!this.state.settings.reshuffle && this.state.hand) {
             this.discardHand();
@@ -242,14 +241,15 @@ class UkeireQuiz extends React.Component {
                 remainingTiles[dora]--;
             }
 
-            do {
-                let generationResult = generateHand(remainingTiles, this.state.settings.tilesInHand);
-                hand = generationResult.hand;
-                availableTiles = generationResult.availableTiles;
-                tilePool = generationResult.tilePool;
+            let generationResult = generateHandInShantenRange(remainingTiles, this.state.settings.tilesInHand,
+                minShanten, maxShanten, generationShantenFunction);
+            hand = generationResult.hand;
+            availableTiles = generationResult.availableTiles;
+            tilePool = generationResult.tilePool;
 
-                if (!hand) break;
-            } while (calculateMinimumShanten(hand) < minShanten)
+            if (hand && generationResult.fellBack) {
+                history.push(new HistoryData(new LocalizedMessage("trainer.error.noHandInShantenRange")));
+            }
 
             if (!hand) {
                 history.push(new HistoryData(new LocalizedMessage("trainer.error.wallEmptyShuffle")));
@@ -262,21 +262,24 @@ class UkeireQuiz extends React.Component {
         }
 
         let remainingTiles = this.getStartingTiles();
-        do {
-            let generationResult = generateHand(remainingTiles, this.state.settings.tilesInHand);
-            hand = generationResult.hand;
-            availableTiles = generationResult.availableTiles;
-            tilePool = generationResult.tilePool;
+        let generationResult = generateHandInShantenRange(remainingTiles, this.state.settings.tilesInHand,
+            minShanten, maxShanten, generationShantenFunction);
+        hand = generationResult.hand;
+        availableTiles = generationResult.availableTiles;
+        tilePool = generationResult.tilePool;
 
-            if (!hand) {
-                history.push(new HistoryData(new LocalizedMessage("trainer.error.wallEmpty")));
+        if (!hand) {
+            history.push(new HistoryData(new LocalizedMessage("trainer.error.wallEmpty")));
 
-                this.setState({
-                    history: history
-                });
-                return;
-            }
-        } while (calculateMinimumShanten(hand) < minShanten)
+            this.setState({
+                history: history
+            });
+            return;
+        }
+
+        if (generationResult.fellBack) {
+            history.push(new HistoryData(new LocalizedMessage("trainer.error.noHandInShantenRange")));
+        }
 
         if (tilePool.length > 0) {
             dora = removeRandomItem(tilePool);
