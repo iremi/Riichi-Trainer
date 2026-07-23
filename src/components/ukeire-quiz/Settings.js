@@ -104,6 +104,9 @@ class Settings extends React.Component {
         if (typeof event === "number") {
             settings[numberInput.id] = event;
         }
+        else if (event.target.tagName === "SELECT") {
+            settings[event.target.id] = Number(event.target.value);
+        }
         else {
             settings[event.target.id] = !settings[event.target.id];
         }
@@ -229,11 +232,14 @@ class Settings extends React.Component {
                         <Row>
                             <Col className="form-check form-check-inline">
                                 <Label className="form-check-label" for="targetShanten">{t("settings.targetShanten")}&nbsp;</Label>
-                                <NumericInput className="form-check-input" type="number" id="targetShanten"
-                                    min={0} max={4} step={1}
-                                    format={(value) => Number(value) > 0 ? String(value) : t("settings.targetShantenAny")}
-                                    parse={(stringValue) => stringValue === t("settings.targetShantenAny") ? 0 : parseInt(stringValue, 10)}
-                                    value={this.state.settings.targetShanten} onChange={this.onSettingChanged} />
+                                <Input type="select" className="shantenSelect" id="targetShanten"
+                                    value={this.state.settings.targetShanten} onChange={this.onSettingChanged}>
+                                    <option value={0}>{t("settings.targetShantenAny")}</option>
+                                    <option value={1}>1</option>
+                                    <option value={2}>2</option>
+                                    <option value={3}>3</option>
+                                    <option value={4}>4</option>
+                                </Input>
                                 <span className="blackText">&nbsp;{t("settings.targetShantenHint")}</span>
                             </Col>
                         </Row>

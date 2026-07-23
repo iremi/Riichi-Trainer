@@ -114,6 +114,22 @@
     white-space: nowrap;
 }
 
+/* Starting hand shanten picker. Bootstrap selects are full-width blocks by
+   default, so pin it inline at a width close to the neighbouring numeric
+   inputs in the settings panel. */
+.shantenSelect {
+    display: inline-block;
+    width: auto;
+    min-width: 5rem;
+    /* Bootstrap selects are much taller than the react-numeric-input boxes used
+       elsewhere in this panel, so match their compact height instead. */
+    height: 22px;
+    padding: 0 0.25rem;
+    font-size: 0.9rem;
+    line-height: 1.2;
+    vertical-align: middle;
+}
+
 /* Top navigation bar: use the full width on mobile so all the buttons
    (nav tabs + Language + Settings + Statistics) can fit on a single row,
    while keeping the original centered width on desktop. */
