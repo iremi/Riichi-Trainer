@@ -43,6 +43,47 @@ Two shanten is the default because that is where tile efficiency matters most: a
 
 Hands are found by generating until one matches, which is capped so an unreachable request cannot hang the browser; if nothing matches, the closest hand is dealt and a note appears in the history. The filter uses the same shanten definition the trainer scores discards with, so it honours the "Consider exception hands" setting.
 
+## Honitsu trainer
+
+A separate tab, deliberately kept apart from the Efficiency Trainer: honitsu is a *routing*
+decision made in the first few turns, and mixing it into tile efficiency would muddy both. It
+shares no state with the trainer, so settings like the starting hand shanten filter do not
+apply here.
+
+It is a drill, not a played-out hand — each item is a position, one answer, and an explanation.
+There are three modes:
+
+- **Routing** — a dealt hand, and the choice between playing straight for riichi, hedging, or
+  committing to honitsu. Seat and round wind are always shown, because guest-wind status flips
+  the answer.
+- **Calling** — a tile is offered or drawn: call it (and with which tiles) or pass. When the
+  answer changes the shape, the resulting hand is drawn out, since seeing the kanchan you would
+  have been left with is most of the lesson.
+- **Value** — count the han. Only completed triplets score, and a wind is worth nothing unless
+  it is your seat wind or the round wind.
+
+Called sets are rendered as melds with the called tile rotated, the way it sits on a real table.
+
+**Anti-memorisation.** The bank is 24 authored items, which is few enough to memorise. Three
+things push back. Answer order is shuffled, so position stops being a cue. **"Mirror suits"**
+(on by default) permutes manzu/pinzu/souzu per item and rewrites the tile references in the
+question and explanation to match, turning each item into six surface forms without changing
+its logic. And progress is tracked **per rule** rather than per item, so the score reads "I get
+bakahon right" instead of "I remember item c-07".
+
+**Generated value items.** Once the six authored value items are spent, the mode generates more
+indefinitely: a lean one-suit hand plus honors, with the yakuhai resolved against the seat and
+round wind, then dora and red fives added. The generator rejects any hand that would also score
+toitoi, ittsuu, chanta, honroutou or shousangen, since the drill only counts the four sources it
+teaches. It stops at the han count and a coarse value class (mangan, haneman, …) — there is no
+fu and no point table, because the question being drilled is "where is my second source of han?".
+The six authored items are the correctness spec, and `HonitsuValue.test.js` pins the counter to
+all six answers.
+
+One quirk of the authored bank: item `r-08` cross-references `r-07`, but the two sit in
+different modes (`r-07` is a routing question, `r-08` a discard), so `r-08` reads slightly
+orphaned on its own.
+
 # For Programmers:
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). Make sure to run `npm install`, everyone's favourite command.
 

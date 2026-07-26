@@ -8,6 +8,7 @@ import Shanten from './Shanten';
 import SouthFourQuiz from './SouthFourQuiz';
 import { withTranslation } from "react-i18next";
 import DefenseState from './DefenseState';
+import HonitsuTrainer from './HonitsuTrainer';
 
 const STATES = {
     UKEIRE: 0,
@@ -17,6 +18,7 @@ const STATES = {
     SOUTH_FOUR: 4,
     DEFENSE: 5,
     SHANTEN: 6,
+    HONITSU: 7,
 };
 
 class MainMenu extends React.Component {
@@ -64,6 +66,8 @@ class MainMenu extends React.Component {
                 page = <DefenseState />; break;
             case STATES.SHANTEN:
                 page = <Shanten />; break;
+            case STATES.HONITSU:
+                page = <HonitsuTrainer />; break;
             default:
                 page = <UkeireQuiz />;
         }
@@ -75,6 +79,7 @@ class MainMenu extends React.Component {
                         <Button color="success" xs="4" disabled={this.state.active === STATES.UKEIRE} onClick={() => this.onSetActivePage(STATES.UKEIRE)}>{t("menu.trainer")}</Button>
                         <Button xs="4" disabled={this.state.active === STATES.REPLAY} onClick={() => this.onSetActivePage(STATES.REPLAY)}>{t("menu.analyzer")}</Button>
                         <Button xs="4" disabled={this.state.active === STATES.SOUTH_FOUR} onClick={() => this.onSetActivePage(STATES.SOUTH_FOUR)}>{t("menu.allLast")}</Button>
+                        <Button xs="4" disabled={this.state.active === STATES.HONITSU} onClick={() => this.onSetActivePage(STATES.HONITSU)}>{t("menu.honitsu")}</Button>
                         <Button xs="4" disabled={this.state.active === STATES.DEFENSE} onClick={() => this.onSetActivePage(STATES.DEFENSE)}>{t("menu.defense")}</Button>
                         <Button xs="4" disabled={this.state.active === STATES.EXPLORER} onClick={() => this.onSetActivePage(STATES.EXPLORER)}>{t("menu.explorer")}</Button>
                         <Button xs="4" disabled={this.state.active === STATES.SHANTEN} onClick={() => this.onSetActivePage(STATES.SHANTEN)}>{t("menu.shanten")}</Button>

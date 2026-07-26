@@ -170,7 +170,41 @@ export const en = {
             utils: "Misc. Utils",
             language: "Language",
             defense: "Folding",
-            shanten: "Shanten"
+            shanten: "Shanten",
+            honitsu: "Honitsu"
+        },
+        honitsu: {
+            modes: {
+                routing: "Routing",
+                calling: "Calling",
+                value_gate: "Value"
+            },
+            instructions: {
+                routing: "Pick the road: play it straight towards riichi, hedge, or commit to honitsu.",
+                calling: "A tile is offered or drawn. Decide what to do with it.",
+                value_gate: "Count the han. Only completed triplets score, and a wind is worth nothing unless it is your seat wind or the round wind."
+            },
+            seatWind: "Seat",
+            roundWind: "Round",
+            dora: "Dora",
+            offered: "Discarded",
+            drawn: "You draw",
+            generated: "Generated",
+            correct: "Correct",
+            incorrect: "Not quite",
+            result: "You would be left with:",
+            resultIfWrong: "That would leave you with:",
+            hanBreakdown: "Han:",
+            ifCompleted: "If completed:",
+            next: "Next",
+            mirrorSuits: "Mirror suits, to disguise items you have already seen",
+            stats: {
+                buttonLabel: "Progress",
+                overall: "Overall: {{correct}} / {{total}} ({{percent}}%)",
+                rule: "Rule",
+                score: "Score",
+                reset: "Reset progress"
+            }
         },
         allLast: {
             placements: {

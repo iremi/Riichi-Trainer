@@ -157,6 +157,184 @@
     font-size: 0.85rem;
 }
 
+/* --- Honitsu trainer --------------------------------------------------- */
+
+/* Tile size is set once here and derived everywhere else. The tile art is
+   192x256, so an upright tile is 4/3 as tall as it is wide, and a called tile
+   lying on its side is 4/3 as wide as it is tall. */
+.honitsuCard {
+    --honitsu-tile-width: clamp(26px, 7.5vw, 42px);
+    --honitsu-tile-height: calc(var(--honitsu-tile-width) * 4 / 3);
+}
+
+.honitsuMode {
+    white-space: normal;
+    padding: 0.4rem 0.3rem;
+    font-size: 0.9rem;
+}
+
+/* Fixed-size tiles rather than the efficiency trainer's flex sizing: several
+   items show only the four-tile block the question is about, and those would
+   otherwise stretch to fill the whole row. */
+.honitsuHand {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 0.6rem;
+    margin-top: 0.5rem;
+}
+
+.honitsuHand-closed {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.honitsuTile {
+    width: var(--honitsu-tile-width);
+}
+
+.honitsuTile img,
+.meldTile img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.meld {
+    display: flex;
+    align-items: flex-end;
+}
+
+.meldTile {
+    width: var(--honitsu-tile-width);
+}
+
+/* The called tile is drawn rotated the way it sits on a real table. Its box
+   swaps width and height, and the image is centered and rotated inside it so
+   the rotation doesn't push the neighbouring tiles around. */
+.meldTile--called {
+    position: relative;
+    width: var(--honitsu-tile-height);
+    height: var(--honitsu-tile-width);
+}
+
+.meldTile--called img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: var(--honitsu-tile-width);
+    height: var(--honitsu-tile-height);
+    transform: translate(-50%, -50%) rotate(-90deg);
+}
+
+.honitsuChips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.honitsuChip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    padding: 0.15em 0.5em;
+    border: 2px solid currentColor;
+    border-radius: 0.7em;
+    color: #FFFFFF;
+    font-size: 0.9rem;
+}
+
+.honitsuChip-label {
+    opacity: 0.85;
+}
+
+.honitsuChip-value {
+    font-weight: bold;
+}
+
+.honitsuChip-tile {
+    display: block;
+    width: 22px;
+    height: auto;
+}
+
+/* Options stack full width so they stay tappable on a phone and can hold a
+   full sentence without truncating. */
+.honitsuOptions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.honitsuOption {
+    width: 100%;
+    text-align: left;
+    white-space: normal;
+}
+
+/* Once answered every option is disabled, but the correct and chosen ones still
+   have to read clearly, so only the unchosen ones are dimmed. */
+.honitsuOption:disabled {
+    opacity: 1;
+}
+
+.honitsuOption--muted:disabled {
+    opacity: 0.55;
+}
+
+.honitsuPrompt {
+    font-size: 1.05rem;
+}
+
+.honitsuNote {
+    font-size: 0.9rem;
+    color: #FFFFFF;
+    opacity: 0.85;
+}
+
+.honitsuVerdict {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* Bootstrap's success and danger colours are hard to read on the teal page. */
+.honitsuVerdict.text-success {
+    color: #9BE59B !important;
+}
+
+.honitsuVerdict.text-danger {
+    color: #FF9B9B !important;
+}
+
+.honitsuRationale {
+    color: #FFFFFF;
+}
+
+.honitsuBreakdown {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: baseline;
+    margin-top: 0.5rem;
+    color: #FFFFFF;
+}
+
+.honitsuBreakdown-label {
+    font-weight: bold;
+}
+
+.honitsuBreakdown-verdict {
+    font-style: italic;
+    opacity: 0.9;
+}
+
+.honitsuStatsTable,
+.honitsuStatsTable th,
+.honitsuStatsTable td {
+    color: #FFFFFF;
+}
+
 .tenhouLink {
     color: #0000EE;
 }

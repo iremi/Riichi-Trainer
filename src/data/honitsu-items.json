@@ -1,0 +1,556 @@
+{
+  "schema_version": 1,
+  "title": "Honitsu routing / calling / value drill items",
+  "notation": {
+    "tile": "number + suit letter. m = manzu, p = pinzu, s = souzu. Trailing 'r' = red five, e.g. '5mr'.",
+    "honors": "E S W N = East South West North. P = haku (white). F = hatsu (green). C = chun (red).",
+    "meld": "{ tiles: [...] in display order with the CALLED tile first, called: <index>, kind: 'chi'|'pon' }",
+    "hand": "{ closed: [tiles], melds: [melds] }"
+  },
+  "answer_model": "Every item has options[] with exactly one correct:true, plus a rationale string. Render prompt + hand, take the answer, then show rationale. Type-specific fields are extra context, not required to score.",
+  "types": {
+    "routing": "Pick the road: riichi (play straight/closed) | hedge | honitsu.",
+    "calling": "A tile is offered. Call it (and with which tiles) or pass.",
+    "value_gate": "Count the han this hand yields as-is, and identify the second source."
+  },
+
+  "items": [
+
+    {
+      "id": "r-01-honor-triplet",
+      "type": "routing",
+      "difficulty": 1,
+      "turn": "deal",
+      "prompt": "Which road is this hand on?",
+      "hand": {
+        "closed": ["3m","3m","4m","5m","7m","8m","4p","6s","7s","E","S","F","F","F"],
+        "melds": []
+      },
+      "seat_wind": "E",
+      "round_wind": "E",
+      "options": [
+        { "id": "riichi", "label": "Riichi — play it straight", "correct": true },
+        { "id": "hedge", "label": "Hedge — keep both routes", "correct": false },
+        { "id": "honitsu", "label": "Honitsu — commit to manzu", "correct": false }
+      ],
+      "rule": "stop-1-honor-triplet",
+      "tags": ["stop","honor-ankou"],
+      "rationale": "Stop 1. The hatsu triplet is a finished set AND a yaku at the same time. Riichi + hatsu + ura reaches mangan with nothing forced, so there is no case for chasing honitsu — you would be pulling apart a hand already on the strongest road."
+    },
+
+    {
+      "id": "r-02-two-offsuit-ryanmen",
+      "type": "routing",
+      "difficulty": 1,
+      "turn": "deal",
+      "prompt": "Manzu looks heavy. Which road?",
+      "hand": {
+        "closed": ["2m","2m","4m","4m","5m","4p","5p","7s","8s","E","W","P","C","C"],
+        "melds": []
+      },
+      "seat_wind": "E",
+      "round_wind": "E",
+      "options": [
+        { "id": "riichi", "label": "Riichi — play it straight", "correct": true },
+        { "id": "hedge", "label": "Hedge — keep both routes", "correct": false },
+        { "id": "honitsu", "label": "Honitsu — commit to manzu", "correct": false }
+      ],
+      "rule": "stop-2-multi-suit-ryanmen",
+      "tags": ["stop","ryanmen"],
+      "rationale": "Stop 2. 4p5p and 7s8s are two ryanmen in two different suits — the hand already has speed. Honitsu means cutting both and rebuilding a wait from nothing. Ponning the chun for 1,000 is also acceptable; a cheap fast hand still ends a dealership. Compare item r-05: same shape family, but there the honors make it mangan and the ruling flips."
+    },
+
+    {
+      "id": "r-03-finished-set-elsewhere",
+      "type": "routing",
+      "difficulty": 1,
+      "turn": "deal",
+      "prompt": "Eight manzu tiles. Which road?",
+      "hand": {
+        "closed": ["2m","3m","3m","4m","7m","9m","9m","9m","3s","4s","5s","W","C","C"],
+        "melds": []
+      },
+      "seat_wind": "E",
+      "round_wind": "E",
+      "options": [
+        { "id": "riichi", "label": "Riichi — play it straight", "correct": true },
+        { "id": "hedge", "label": "Hedge — keep both routes", "correct": false },
+        { "id": "honitsu", "label": "Honitsu — commit to manzu", "correct": false }
+      ],
+      "rule": "stop-3-finished-set",
+      "tags": ["stop","completed-run"],
+      "rationale": "Stop 3. 3s4s5s is already a finished set. Demolishing a completed block is the most expensive thing you can do to a hand, and honitsu is not worth that price when riichi is available. Note the manzu count is genuinely tempting here — eight tiles — which is exactly why this one catches people."
+    },
+
+    {
+      "id": "r-04-scattered",
+      "type": "routing",
+      "difficulty": 1,
+      "turn": "deal",
+      "prompt": "Which road?",
+      "hand": {
+        "closed": ["1m","1m","3m","7m","9m","5p","8p","4s","8s","E","S","W","C","C"],
+        "melds": []
+      },
+      "seat_wind": "E",
+      "round_wind": "E",
+      "options": [
+        { "id": "riichi", "label": "Riichi — play it straight", "correct": false },
+        { "id": "hedge", "label": "Hedge — keep both routes", "correct": false },
+        { "id": "honitsu", "label": "Honitsu — commit to manzu", "correct": true }
+      ],
+      "rule": "trigger-a-scattered",
+      "tags": ["go","scattered","defense"],
+      "rationale": "Trigger A. Played straight this reaches tenpai roughly never. Honitsu converts a dead hand into a live one, and the five honors you are holding double as fold stock — unusual for an open hand. Value check also clears: the chun pair means honitsu + chun = 3 han minimum."
+    },
+
+    {
+      "id": "r-05-mangan-overrides-ryanmen",
+      "type": "routing",
+      "difficulty": 3,
+      "turn": "deal",
+      "prompt": "Two off-suit ryanmen here. Which road?",
+      "hand": {
+        "closed": ["4m","5m","8m","8m","9m","4p","5p","7s","8s","E","P","P","C","C"],
+        "melds": []
+      },
+      "seat_wind": "E",
+      "round_wind": "E",
+      "options": [
+        { "id": "riichi", "label": "Riichi — Stop 2 says keep the ryanmen", "correct": false },
+        { "id": "hedge", "label": "Hedge — keep both routes", "correct": false },
+        { "id": "honitsu", "label": "Honitsu — cut both ryanmen", "correct": true }
+      ],
+      "rule": "trigger-b-mangan-overrides-stop-2",
+      "tags": ["go","override","two-yakuhai-pairs"],
+      "han_if_completed": { "han": 4, "sources": ["honitsu 2","haku 1","chun 1"], "value": "mangan 8,000" },
+      "rationale": "Trigger B overrides Stop 2. Yes, 4p5p and 7s8s are two ryanmen — but look at the honors: haku pair AND chun pair. Honitsu 2 + haku 1 + chun 1 = 4 han = mangan. Stop 2 was never 'don't break ryanmen', it was 'don't break ryanmen for a CHEAP honitsu'. Caveat: both pairs must become triplets for the full 4 han. One landing gives 3 han (~3,900-5,200), which still clears the gate."
+    },
+
+    {
+      "id": "r-06-red-five",
+      "type": "routing",
+      "difficulty": 2,
+      "turn": "deal",
+      "prompt": "Which road?",
+      "hand": {
+        "closed": ["1m","1m","2m","5mr","7m","8m","8m","4p","5p","7s","8s","E","C","C"],
+        "melds": []
+      },
+      "seat_wind": "E",
+      "round_wind": "E",
+      "options": [
+        { "id": "riichi", "label": "Riichi — play it straight", "correct": false },
+        { "id": "hedge", "label": "Hedge — keep both routes", "correct": false },
+        { "id": "honitsu", "label": "Honitsu — cut both ryanmen", "correct": true }
+      ],
+      "rule": "trigger-b-red-five",
+      "tags": ["go","red-five"],
+      "han_if_completed": { "han": 4, "sources": ["honitsu 2","chun 1","red five 1"], "value": "mangan ~7,700-8,000" },
+      "rationale": "Trigger B via red five. Honitsu 2 + chun 1 + red five 1 = 4 han. The red five does the work a good shape would otherwise have to, so cutting both off-suit ryanmen still lands mangan. Note this is the MORE reliable version of trigger B than r-05: the red five is already in your hand, whereas a dragon pair still has to complete."
+    },
+
+    {
+      "id": "r-07-hedge",
+      "type": "routing",
+      "difficulty": 3,
+      "turn": "mid-hand",
+      "prompt": "Chun is ponned. Which road from here?",
+      "hand": {
+        "closed": ["1m","1m","6m","7m","7m","8m","9m","2s","3s","P"],
+        "melds": [{ "tiles": ["C","C","C"], "called": 0, "kind": "pon" }]
+      },
+      "seat_wind": "E",
+      "round_wind": "E",
+      "options": [
+        { "id": "riichi", "label": "Cut the haku — take the fastest tenpai", "correct": false },
+        { "id": "hedge", "label": "Keep the haku — hedge on it pairing", "correct": true },
+        { "id": "honitsu", "label": "Commit now — cut 2s3s immediately", "correct": false }
+      ],
+      "rule": "ryoutenbin",
+      "tags": ["hedge","ryanmen-ryanmen-iishanten"],
+      "rationale": "Hedge. This is ryanmen-ryanmen iishanten (1m1m pair, 789m set, 6m7m, 2s3s, chun set) with the lone haku as a sixth block held purely for value. Pair the haku and you are honitsu + chun + haku, a completely different hand. Rule: tenpai first, take it; haku first, shift. This is Gentaro Q8-4 with a dragon instead of a pin block."
+    },
+
+    {
+      "id": "r-08-hedge-cost",
+      "type": "calling",
+      "difficulty": 4,
+      "turn": "mid-hand",
+      "prompt": "Same hand as r-07. You draw a 3s. What do you discard?",
+      "hand": {
+        "closed": ["1m","1m","6m","7m","7m","8m","9m","2s","3s","3s","P"],
+        "melds": [{ "tiles": ["C","C","C"], "called": 0, "kind": "pon" }]
+      },
+      "drawn": "3s",
+      "seat_wind": "E",
+      "round_wind": "E",
+      "options": [
+        { "id": "cut-3s", "label": "Discard the 3s — keep the haku", "correct": true },
+        { "id": "cut-haku", "label": "Discard the haku — keep 233s", "correct": false },
+        { "id": "cut-1m", "label": "Discard a 1m", "correct": false }
+      ],
+      "rule": "ryoutenbin-cost",
+      "tags": ["hedge","cost-of-optionality"],
+      "rationale": "This is what 'paying for the option' actually looks like, and it is sharper than it sounds. 233s is a genuinely useful shape — backup pair, upgrade path. The efficient discard is the haku. You throw the 3s anyway. The lesson is not 'discard junk to keep your option', it is 'decline a real improvement to keep the value route open' (打点をおう). If optionality only ever costs you worthless tiles, you are not hedging, you are holding a floater until it becomes inconvenient."
+    },
+
+    {
+      "id": "r-09-cheap-honitsu-dont-pay",
+      "type": "routing",
+      "difficulty": 4,
+      "turn": "deal",
+      "prompt": "Six manzu tiles and an honor pair. Which road?",
+      "hand": {
+        "closed": ["2m","3m","4m","5m","6m","7m","4p","5p","6s","7s","N","N","S","W"],
+        "melds": []
+      },
+      "seat_wind": "E",
+      "round_wind": "E",
+      "options": [
+        { "id": "riichi", "label": "Riichi — play it straight", "correct": true },
+        { "id": "hedge", "label": "Hedge — keep both routes", "correct": false },
+        { "id": "honitsu", "label": "Honitsu — commit to manzu", "correct": false }
+      ],
+      "rule": "value-gate-hard-veto",
+      "tags": ["stop","value-gate","guest-winds"],
+      "rationale": "The value gate as a hard veto. Seat and round wind are both East, so North, South and West are all GUEST winds — zero han. Honitsu here is 2 han, ~2,000. Meanwhile 234m and 567m are already complete, plus two ryanmen and a pair. You would be paying two finished runs' worth of structure for 2,000 points. Contrast r-10: same absence of yakuhai, opposite answer, because there the hand has nothing to pay with."
+    },
+
+    {
+      "id": "r-10-cheap-honitsu-but-nothing-to-lose",
+      "type": "routing",
+      "difficulty": 5,
+      "turn": "deal",
+      "prompt": "No dragons, no dora, all guest winds. Which road?",
+      "hand": {
+        "closed": ["1m","1m","2m","5m","6m","8m","9m","4p","7s","N","N","W","W","S"],
+        "melds": []
+      },
+      "seat_wind": "E",
+      "round_wind": "E",
+      "options": [
+        { "id": "riichi", "label": "Riichi — play it straight", "correct": false },
+        { "id": "hedge", "label": "Hedge — keep both routes", "correct": false },
+        { "id": "honitsu", "label": "Honitsu — commit, but push cheaply", "correct": true }
+      ],
+      "rule": "value-gate-advisory",
+      "tags": ["go","value-gate","asymmetry"],
+      "rationale": "The hardest item here, and the one that shows the gate is ASYMMETRIC. Honitsu is only 2 han — but the alternative is noten. You are paying nothing because there is nothing to pay with, so the gate stops being a veto and becomes a throttle: it tells you HOW HARD to push, not whether to start. Correct play is take the free calls, hold the honor pairs for defense, and fold the moment anyone riichis. Compare r-09, where the identical value picture produces the opposite ruling because good blocks were on the table."
+    },
+
+    {
+      "id": "c-01-kuinobashi-4556",
+      "type": "calling",
+      "difficulty": 2,
+      "prompt": "Committed to manzu honitsu. A 7m is discarded. Call it?",
+      "hand": { "closed": ["4m","5m","5m","6m"], "melds": [] },
+      "note": "Partial hand — only the relevant block is shown.",
+      "offered": "7m",
+      "options": [
+        { "id": "chi-56", "label": "Chi with 5m6m", "correct": true },
+        { "id": "chi-other", "label": "Chi with 6m and the other 5m", "correct": false },
+        { "id": "pass", "label": "Pass", "correct": false }
+      ],
+      "result": { "closed": ["4m","5m"], "melds": [{ "tiles": ["7m","5m","6m"], "called": 0, "kind": "chi" }] },
+      "rule": "kuinobashi",
+      "tags": ["call","kuinobashi"],
+      "rationale": "Kuinobashi. Chi with 5m6m and you keep a live 4m5m ryanmen while locking 567m. Four tiles became a set plus a working ryanmen. Compare c-04, which is the same four tiles called wrong."
+    },
+
+    {
+      "id": "c-02-kuinobashi-2234",
+      "type": "calling",
+      "difficulty": 2,
+      "prompt": "Committed to manzu honitsu. A 3m is discarded. Call it?",
+      "hand": { "closed": ["2m","2m","3m","4m"], "melds": [] },
+      "note": "Partial hand — only the relevant block is shown.",
+      "offered": "3m",
+      "options": [
+        { "id": "chi-24", "label": "Chi with 2m4m", "correct": true },
+        { "id": "pon-22", "label": "Pon is not possible here", "correct": false },
+        { "id": "pass", "label": "Pass", "correct": false }
+      ],
+      "result": { "closed": ["2m","3m"], "melds": [{ "tiles": ["3m","2m","4m"], "called": 0, "kind": "chi" }] },
+      "rule": "kuinobashi",
+      "tags": ["call","kuinobashi"],
+      "rationale": "Kuinobashi. Chi with 2m4m locks 234m and leaves 2m3m as a live ryanmen."
+    },
+
+    {
+      "id": "c-03-kuinobashi-6789",
+      "type": "calling",
+      "difficulty": 2,
+      "prompt": "Committed to manzu honitsu. A 7m is discarded. Call it?",
+      "hand": { "closed": ["6m","7m","8m","9m"], "melds": [] },
+      "note": "Partial hand — only the relevant block is shown.",
+      "offered": "7m",
+      "options": [
+        { "id": "chi-89", "label": "Chi with 8m9m", "correct": true },
+        { "id": "chi-68", "label": "Chi with 6m8m", "correct": false },
+        { "id": "pass", "label": "Pass", "correct": false }
+      ],
+      "result": { "closed": ["6m","7m"], "melds": [{ "tiles": ["7m","8m","9m"], "called": 0, "kind": "chi" }] },
+      "rule": "kuinobashi",
+      "tags": ["call","kuinobashi"],
+      "rationale": "Kuinobashi. Chi with 8m9m locks 789m and leaves 6m7m as a live ryanmen. Calling with 6m8m instead would leave 7m9m — a kanchan. Same tiles, worse outcome."
+    },
+
+    {
+      "id": "c-04-badcall-4556-pon",
+      "type": "calling",
+      "difficulty": 3,
+      "prompt": "Committed to manzu honitsu. A 5m is discarded. Call it?",
+      "hand": { "closed": ["4m","5m","5m","6m"], "melds": [] },
+      "note": "Partial hand — only the relevant block is shown.",
+      "offered": "5m",
+      "options": [
+        { "id": "pass", "label": "Pass", "correct": true },
+        { "id": "pon", "label": "Pon the 5m", "correct": false }
+      ],
+      "result_if_wrong": { "closed": ["4m","6m"], "melds": [{ "tiles": ["5m","5m","5m"], "called": 0, "kind": "pon" }] },
+      "rule": "never-1-shape-wrecking",
+      "tags": ["call","bad-call","kanchan"],
+      "rationale": "Never 1 — the shape-wrecking call. Ponning the 5m leaves you on a 4-6m kanchan. Identical four tiles to c-01, and the only difference is which tiles you called with. Take it only if it is clear you will not reach tenpai otherwise, and reluctantly."
+    },
+
+    {
+      "id": "c-05-badcall-6789-chi5",
+      "type": "calling",
+      "difficulty": 3,
+      "prompt": "Committed to manzu honitsu. A 5m is discarded. Call it?",
+      "hand": { "closed": ["6m","7m","8m","9m"], "melds": [] },
+      "note": "Partial hand — only the relevant block is shown.",
+      "offered": "5m",
+      "options": [
+        { "id": "pass", "label": "Pass", "correct": true },
+        { "id": "chi-67", "label": "Chi with 6m7m", "correct": false }
+      ],
+      "result_if_wrong": { "closed": ["8m","9m"], "melds": [{ "tiles": ["5m","6m","7m"], "called": 0, "kind": "chi" }] },
+      "rule": "never-1-shape-wrecking",
+      "tags": ["call","bad-call","penchan"],
+      "rationale": "Never 1 — the shape-wrecking call. Chi with 6m7m and you are left on an 8-9m penchan. Same four tiles as c-03, called wrong."
+    },
+
+    {
+      "id": "c-06-call-that-looks-pointless",
+      "type": "calling",
+      "difficulty": 4,
+      "prompt": "Committed to manzu honitsu, chun ponned. A 6m is discarded — but you already hold 5m6m7m as a finished run. Call it?",
+      "hand": {
+        "closed": ["1m","1m","2m","5m","6m","7m","2s","9s","P","P"],
+        "melds": [{ "tiles": ["C","C","C"], "called": 0, "kind": "pon" }]
+      },
+      "offered": "6m",
+      "options": [
+        { "id": "chi-57", "label": "Chi with 5m and 7m", "correct": true },
+        { "id": "pass", "label": "Pass — 567m is already complete", "correct": false }
+      ],
+      "result": {
+        "closed": ["1m","1m","2m","6m","9s","P","P"],
+        "melds": [
+          { "tiles": ["6m","5m","7m"], "called": 0, "kind": "chi" },
+          { "tiles": ["C","C","C"], "called": 0, "kind": "pon" }
+        ]
+      },
+      "rule": "call-for-volume",
+      "tags": ["call","volume","counter-intuitive"],
+      "han_if_completed": { "han": 4, "sources": ["honitsu 2","chun 1","haku 1"], "value": "mangan" },
+      "rationale": "Call it. The shanten does NOT improve — 567m was already a finished run. What the call buys is one manzu tile from outside your hand: working manzu goes from 112m to 1126m, and the spare 6m becomes a fifth-block seed (456m, 678m, 66m) where the locked run had nowhere to go. Volume in the suit is worth paying for even when it does not shorten the hand, because a suit tile you called is a suit tile you never have to draw. Discard the 9s. Value clears easily: honitsu 2 + chun 1 + haku 1 = mangan."
+    },
+
+    {
+      "id": "c-07-bakahon",
+      "type": "calling",
+      "difficulty": 3,
+      "prompt": "Honitsu-only, no yakuhai. A West is discarded and you hold two. Pon it?",
+      "hand": {
+        "closed": ["3m","5m","7m","9m","W","W","P"],
+        "melds": [
+          { "tiles": ["1m","2m","3m"], "called": 0, "kind": "chi" },
+          { "tiles": ["N","N","N"], "called": 0, "kind": "pon" }
+        ]
+      },
+      "offered": "W",
+      "seat_wind": "E",
+      "round_wind": "E",
+      "options": [
+        { "id": "pass", "label": "Pass — keep the pair as safe tiles", "correct": true },
+        { "id": "pon", "label": "Pon — widen the hand", "correct": false }
+      ],
+      "rule": "never-2-bakahon",
+      "tags": ["call","bakahon","defense"],
+      "han_if_completed": { "han": 2, "sources": ["honitsu 2"], "value": "~2,000-2,600" },
+      "rationale": "Never 2 — bakahon. Seat and round wind are East, so West and North are guest winds: this hand is honitsu-only, 2 han, ~2,000 points. Ponning the West raises the ceiling and drops your defense to zero. Leave the pair as fold stock — that defensive reserve is the entire reason scattered-hand honitsu was attractive. Do not sell safe tiles this cheaply."
+    },
+
+    {
+      "id": "c-08-bakahon-exception",
+      "type": "calling",
+      "difficulty": 4,
+      "prompt": "Same hand as c-07 — but you are now the West seat. A West is discarded. Pon it?",
+      "hand": {
+        "closed": ["3m","5m","7m","9m","W","W","P"],
+        "melds": [
+          { "tiles": ["1m","2m","3m"], "called": 0, "kind": "chi" },
+          { "tiles": ["N","N","N"], "called": 0, "kind": "pon" }
+        ]
+      },
+      "offered": "W",
+      "seat_wind": "W",
+      "round_wind": "E",
+      "options": [
+        { "id": "pon", "label": "Pon — the value justifies it", "correct": true },
+        { "id": "pass", "label": "Pass — keep the pair as safe tiles", "correct": false }
+      ],
+      "rule": "never-2-bakahon-exception",
+      "tags": ["call","bakahon","seat-wind","exception"],
+      "han_if_completed": { "han": 3, "sources": ["honitsu 2","seat wind 1"], "value": "~3,900-5,200, mangan-adjacent with any dora" },
+      "rationale": "The exception, and the reason the rule is worded carefully. West is now YOUR seat wind, so the pon adds a han: honitsu 2 + seat wind 1 = 3 han, mangan-adjacent with any dora. At that value, burning your defense to push is correct. The rule was never 'protect your safe tiles' — it is 'do not sell your safe tiles CHEAPLY'. Identical tiles to c-07, opposite answer, and the only thing that changed is your seat."
+    },
+
+    {
+      "id": "v-01-honitsu-only",
+      "type": "value_gate",
+      "difficulty": 1,
+      "prompt": "Open manzu honitsu, completed as shown. How many han?",
+      "hand": {
+        "closed": ["3m","4m","5m","W","W"],
+        "melds": [
+          { "tiles": ["1m","2m","3m"], "called": 0, "kind": "chi" },
+          { "tiles": ["N","N","N"], "called": 0, "kind": "pon" }
+        ]
+      },
+      "seat_wind": "E",
+      "round_wind": "E",
+      "options": [
+        { "id": "2", "label": "2 han (~2,000)", "correct": true },
+        { "id": "3", "label": "3 han (~3,900-5,200)", "correct": false },
+        { "id": "4", "label": "4 han (mangan)", "correct": false }
+      ],
+      "answer": { "han": 2, "sources": ["honitsu 2"], "verdict": "no second source — do not pay blocks for this" },
+      "tags": ["value","guest-winds"],
+      "rationale": "Honitsu 2 and nothing else. North is a guest wind at East seat / East round, so the triplet is worth zero han. This is the shape of the trap: eight turns of work for ~2,000 points."
+    },
+
+    {
+      "id": "v-02-one-dragon",
+      "type": "value_gate",
+      "difficulty": 1,
+      "prompt": "Open manzu honitsu, completed as shown. How many han?",
+      "hand": {
+        "closed": ["3m","4m","5m","1m","1m"],
+        "melds": [
+          { "tiles": ["7m","8m","9m"], "called": 0, "kind": "chi" },
+          { "tiles": ["C","C","C"], "called": 0, "kind": "pon" }
+        ]
+      },
+      "seat_wind": "S",
+      "round_wind": "E",
+      "options": [
+        { "id": "2", "label": "2 han (~2,000)", "correct": false },
+        { "id": "3", "label": "3 han (~3,900-5,200)", "correct": true },
+        { "id": "4", "label": "4 han (mangan)", "correct": false }
+      ],
+      "answer": { "han": 3, "sources": ["honitsu 2","chun 1"], "verdict": "clears the gate — a real hand" },
+      "tags": ["value","dragon"],
+      "rationale": "Honitsu 2 + chun 1 = 3 han. One dragon triplet roughly doubles the payout over v-01. This is the minimum you should accept when you are paying real blocks for the road."
+    },
+
+    {
+      "id": "v-03-two-dragons",
+      "type": "value_gate",
+      "difficulty": 1,
+      "prompt": "Open manzu honitsu, completed as shown. How many han?",
+      "hand": {
+        "closed": ["4m","5m","6m","E"],
+        "melds": [
+          { "tiles": ["P","P","P"], "called": 0, "kind": "pon" },
+          { "tiles": ["8m","8m","8m"], "called": 0, "kind": "pon" },
+          { "tiles": ["C","C","C"], "called": 0, "kind": "pon" }
+        ]
+      },
+      "seat_wind": "S",
+      "round_wind": "S",
+      "options": [
+        { "id": "2", "label": "2 han", "correct": false },
+        { "id": "3", "label": "3 han", "correct": false },
+        { "id": "4", "label": "4 han (mangan)", "correct": true }
+      ],
+      "answer": { "han": 4, "sources": ["honitsu 2","haku 1","chun 1"], "verdict": "mangan — stop optimising the wait and push" },
+      "tags": ["value","two-dragons","bad-wait-ok"],
+      "rationale": "Honitsu 2 + haku 1 + chun 1 = 4 han = mangan. Note the wait is a lone East tanki, which is terrible and does not matter. Once a hand is mangan-class, stop optimising the wait and push whatever you are given — a bad wait on 8,000 beats a good wait on 2,000."
+    },
+
+    {
+      "id": "v-04-seat-wind",
+      "type": "value_gate",
+      "difficulty": 2,
+      "prompt": "Open manzu honitsu, completed as shown. You are the South seat in the East round. How many han?",
+      "hand": {
+        "closed": ["2m","3m","4m","7m","7m"],
+        "melds": [
+          { "tiles": ["S","S","S"], "called": 0, "kind": "pon" },
+          { "tiles": ["5m","6m","7m"], "called": 0, "kind": "chi" }
+        ]
+      },
+      "seat_wind": "S",
+      "round_wind": "E",
+      "options": [
+        { "id": "2", "label": "2 han", "correct": false },
+        { "id": "3", "label": "3 han", "correct": true },
+        { "id": "4", "label": "4 han (mangan)", "correct": false }
+      ],
+      "answer": { "han": 3, "sources": ["honitsu 2","seat wind 1"], "verdict": "clears the gate" },
+      "tags": ["value","seat-wind"],
+      "rationale": "Honitsu 2 + South as your seat wind 1 = 3 han. The same triplet would be worth zero to any other player at the table — this is why 'is it a guest wind?' has to be part of the value check, not just 'is it an honor?'. If you were South seat in the South round it would be a double wind: 4 han and mangan."
+    },
+
+    {
+      "id": "v-05-pairs-are-not-han",
+      "type": "value_gate",
+      "difficulty": 4,
+      "prompt": "Committed to manzu honitsu. If you won RIGHT NOW on this shape, how many han?",
+      "hand": {
+        "closed": ["2m","3m","4m","6m","7m","8m","P","P","C","C"],
+        "melds": [{ "tiles": ["1m","2m","3m"], "called": 0, "kind": "chi" }]
+      },
+      "seat_wind": "E",
+      "round_wind": "E",
+      "options": [
+        { "id": "2", "label": "2 han — the pairs are not yet triplets", "correct": true },
+        { "id": "3", "label": "3 han", "correct": false },
+        { "id": "4", "label": "4 han — two dragon pairs", "correct": false }
+      ],
+      "answer": { "han": 2, "ceiling": 4, "sources": ["honitsu 2"], "verdict": "4 han is the CEILING, not the current value" },
+      "tags": ["value","trap","pairs"],
+      "rationale": "The most common miscount. Two dragon pairs is a CEILING of 4 han, not a floor — haku-haku is worth zero until it is haku-haku-haku. Right now this is 2 han. Land one dragon and you are at 3; land both and you are at 4. The commit is still correct because the ceiling is high, but plan for the 3-han outcome and treat mangan as upside. A dora or red five is a more reliable second source precisely because it is already in hand."
+    },
+
+    {
+      "id": "v-06-dora-stack",
+      "type": "value_gate",
+      "difficulty": 2,
+      "prompt": "Open manzu honitsu, completed as shown. Dora is 8m. How many han?",
+      "hand": {
+        "closed": ["2m","3m","4m","8m","8m"],
+        "melds": [
+          { "tiles": ["C","C","C"], "called": 0, "kind": "pon" },
+          { "tiles": ["6m","5mr","7m"], "called": 0, "kind": "chi" }
+        ]
+      },
+      "seat_wind": "E",
+      "round_wind": "E",
+      "dora": "8m",
+      "options": [
+        { "id": "3", "label": "3 han", "correct": false },
+        { "id": "4", "label": "4 han", "correct": false },
+        { "id": "6", "label": "6 han (haneman)", "correct": true }
+      ],
+      "answer": { "han": 6, "sources": ["honitsu 2","chun 1","dora 2 (8m pair)","red five 1"], "verdict": "haneman — this is what stacking looks like" },
+      "tags": ["value","dora","red-five","stacking"],
+      "rationale": "Honitsu 2 + chun 1 + two dora (the 8m pair) + red five 1 = 6 han, haneman. Worth drilling because it shows the upside the video never quantifies: honitsu's base of 2 is a MULTIPLIER PLATFORM, not a ceiling. Every han you stack on top roughly doubles again, which is why 'where is my second han?' is the right question and 'is honitsu possible?' is the wrong one."
+    }
+
+  ]
+}
