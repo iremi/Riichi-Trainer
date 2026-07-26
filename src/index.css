@@ -420,34 +420,138 @@
     color: #FFFFFF;
 }
 
-.liveDiscards {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-}
+/* The four seats laid out around a table.
 
-.liveDiscards-row {
-    display: flex;
-    align-items: center;
+   On a phone a three-column cross is unreadable, so the grid collapses to one
+   column with your own seat first — the hand is what you interact with, and it
+   should not sit below four discard ponds. From tablet width up it becomes the
+   familiar cross, with your seat spanning the full width so the hand has room
+   to stay on one row. */
+.mahjongTable {
+    display: grid;
     gap: 0.5rem;
+    margin-top: 0.75rem;
+    grid-template-areas:
+        "you"
+        "center"
+        "toimen"
+        "shimocha"
+        "kamicha";
 }
 
-.liveDiscards-label {
-    min-width: 5.5rem;
+@media (min-width: 768px) {
+    .mahjongTable {
+        grid-template-columns: 1fr 1.15fr 1fr;
+        grid-template-areas:
+            ".       toimen   ."
+            "kamicha center   shimocha"
+            "you     you      you";
+        align-items: start;
+    }
+}
+
+.tableSeat {
+    grid-area: you;
+    padding: 0.4rem 0.5rem;
+    border-radius: 0.5rem;
+    background: rgba(0, 0, 0, 0.18);
+    color: #FFFFFF;
+}
+
+.tableSeat--toimen { grid-area: toimen; }
+.tableSeat--kamicha { grid-area: kamicha; }
+.tableSeat--shimocha { grid-area: shimocha; }
+.tableSeat--you { grid-area: you; }
+
+.tableSeat-header {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 0.3rem;
     font-size: 0.85rem;
+}
+
+.tableSeat-wind {
+    font-weight: bold;
+}
+
+.tableSeat-name {
+    opacity: 0.75;
+}
+
+.tableSeat-tag {
+    padding: 0 0.4em;
+    border: 1px solid currentColor;
+    border-radius: 0.6em;
+    font-size: 0.75rem;
     opacity: 0.85;
 }
 
-.liveDiscards-tiles {
-    display: flex;
-    flex-wrap: wrap;
+/* A pond is laid down six to a row, the way it is on a real table.
+
+   The columns are sized to the tile rather than to a fraction of the panel:
+   fractional columns stretch to whatever width the seat happens to have and
+   scatter the tiles across it, which reads nothing like a pond. */
+.pond {
+    --pond-tile-width: calc(var(--honitsu-tile-width) * 0.7);
+    display: grid;
+    grid-template-columns: repeat(6, var(--pond-tile-width));
     gap: 1px;
+    justify-content: start;
 }
 
-.liveDiscards-tile {
-    width: calc(var(--honitsu-tile-width) * 0.62);
+@media (min-width: 768px) {
+    .tableSeat--kamicha .pond,
+    .tableSeat--shimocha .pond {
+        grid-template-columns: repeat(4, var(--pond-tile-width));
+    }
+}
+
+.pondTile {
+    width: var(--pond-tile-width);
     height: auto;
     display: block;
+}
+
+/* Your own pond sits under your hand, so it needs a gap to read as separate. */
+.tableSeat--you .pond {
+    margin-top: 0.5rem;
+}
+
+.tableCenter {
+    grid-area: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    padding: 0.6rem;
+    border-radius: 0.5rem;
+    background: rgba(0, 0, 0, 0.3);
+    color: #FFFFFF;
+}
+
+.tableCenter-round {
+    font-weight: bold;
+    font-size: 1.05rem;
+}
+
+.tableCenter-doraLabel {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+.tableCenter-dora {
+    width: var(--honitsu-tile-width);
+    height: auto;
+    display: block;
+}
+
+.tableCenter-counts {
+    display: flex;
+    gap: 0.75rem;
+    font-size: 0.85rem;
+    opacity: 0.85;
 }
 
 .liveResult {

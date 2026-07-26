@@ -56,8 +56,18 @@ It has four modes: three drills, and a **Live hand** you actually play out.
 
 Deal a hand and play it: discard, take draws, and call or pass on what the table offers. Called
 sets become real melds, so calling opens the hand — riichi is off and a closed honitsu drops from
-three han to two. Opponents' discards are shown, since reading whether your suit is still being
-fed is part of the decision.
+three han to two.
+
+The hand is laid out as a **table**: the four seats around a centre panel holding the round, dora
+indicator, turn and wall count, with each player's discards in a pond rather than a flat row.
+Reading whether your suit is still being fed is part of the decision, so the ponds are not
+decoration. Every seat's wind is shown, derived from yours by turn order, and the left-hand seat
+is tagged as the only one you can chi from. On a phone the table collapses to a single column with
+your own seat first, since the hand is what you interact with.
+
+There are no names, scores or riichi indicators, because the trainer does not model them:
+opponents' discards come straight off the wall rather than from simulated hands. A riichi badge
+would imply defensive decisions this trainer cannot score.
 
 **The coach is silent unless you ask.** Every discard is analysed and recorded as it happens, but
 nothing is shown until you press **Hint**, so the hand is a real test by default. The hint reveals

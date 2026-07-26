@@ -1,6 +1,6 @@
 import React from 'react';
 import { Row, Col, Button } from 'reactstrap';
-import LiveHand from '../components/honitsu-trainer/LiveHand';
+import LiveTable from '../components/honitsu-trainer/LiveTable';
 import RoadHint from '../components/honitsu-trainer/RoadHint';
 import { analyzeHand, findCalls, takeTile, doraFromIndicator, estimateHonitsuValue, estimateSpeedValue, SUIT_NAMES } from '../scripts/HonitsuAnalysis';
 import { calculateStandardShanten } from '../scripts/ShantenCalculator';
@@ -8,7 +8,7 @@ import { shuffleArray, randomInt } from '../scripts/Utils';
 import { convertHandToTileIndexArray } from '../scripts/HandConversions';
 import { getTileImage, getTileAsText } from '../scripts/TileConversions';
 import { withTranslation } from 'react-i18next';
-import { SEAT_NAMES, PLAYER_NAMES } from '../Constants';
+import { PLAYER_NAMES } from '../Constants';
 
 /** @readonly How many tiles are dealt before the first discard. */
 const STARTING_HAND_SIZE = 14;
@@ -357,37 +357,6 @@ class HonitsuLive extends React.Component {
         });
     }
 
-    /** Renders the seat, round and dora context. */
-    renderContext() {
-        let { t } = this.props;
-
-        return (
-            <div className="honitsuChips mb-2">
-                <div className="honitsuChip">
-                    <span className="honitsuChip-label">{t("honitsu.roundWind")}</span>
-                    <span className="honitsuChip-value">{t(SEAT_NAMES[this.state.roundWind - 31])}</span>
-                </div>
-                <div className="honitsuChip">
-                    <span className="honitsuChip-label">{t("honitsu.seatWind")}</span>
-                    <span className="honitsuChip-value">{t(SEAT_NAMES[this.state.seatWind - 31])}</span>
-                </div>
-                <div className="honitsuChip">
-                    <span className="honitsuChip-label">{t("honitsu.live.doraIndicator")}</span>
-                    <img
-                        className="honitsuChip-tile"
-                        src={getTileImage(this.state.doraIndicator)}
-                        alt={getTileAsText(t, this.state.doraIndicator)}
-                        title={getTileAsText(t, this.state.doraIndicator)}
-                    />
-                </div>
-                <div className="honitsuChip">
-                    <span className="honitsuChip-label">{t("honitsu.live.wall")}</span>
-                    <span className="honitsuChip-value">{this.state.tilePool.length}</span>
-                </div>
-            </div>
-        );
-    }
-
     /** Renders the call prompt, neutrally: the hint stays behind its button. */
     renderCallPrompt() {
         let { t } = this.props;
@@ -425,34 +394,6 @@ class HonitsuLive extends React.Component {
                         {t("honitsu.live.pass")}
                     </Button>
                 </div>
-            </div>
-        );
-    }
-
-    /** Renders the opponents' discard piles, which is how the suit feed is read. */
-    renderDiscards() {
-        let { t } = this.props;
-
-        return (
-            <div className="liveDiscards mt-3">
-                {this.state.discards.map((pile, index) => (
-                    pile.length === 0 ? null : (
-                        <div className="liveDiscards-row" key={index}>
-                            <span className="liveDiscards-label">{t(PLAYER_NAMES[index])}</span>
-                            <div className="liveDiscards-tiles">
-                                {pile.map((tile, position) => (
-                                    <img
-                                        key={position}
-                                        className="liveDiscards-tile"
-                                        src={getTileImage(tile)}
-                                        alt={getTileAsText(t, tile)}
-                                        title={getTileAsText(t, tile)}
-                                    />
-                                ))}
-                            </div>
-                        </div>
-                    )
-                ))}
             </div>
         );
     }
@@ -561,8 +502,6 @@ class HonitsuLive extends React.Component {
                     </Col>
                 </Row>
 
-                {this.renderContext()}
-
                 <Row className="mb-1">
                     <Col xs="12">
                         <span className="honitsuNote">
@@ -575,17 +514,22 @@ class HonitsuLive extends React.Component {
                     </Col>
                 </Row>
 
-                <LiveHand
-                    hand={this.state.hand}
-                    melds={this.state.melds}
-                    lastDraw={this.state.lastDraw}
-                    onTileClick={this.state.complete || this.state.pendingCall ? null : this.onTileClicked}
-                />
-
                 {this.renderCallPrompt()}
                 {analysis && <RoadHint analysis={analysis} />}
                 {this.renderResult()}
-                {this.renderDiscards()}
+
+                <LiveTable
+                    hand={this.state.hand}
+                    melds={this.state.melds}
+                    lastDraw={this.state.lastDraw}
+                    discards={this.state.discards}
+                    seatWind={this.state.seatWind}
+                    roundWind={this.state.roundWind}
+                    doraIndicator={this.state.doraIndicator}
+                    turn={this.state.turn}
+                    wallCount={this.state.tilePool.length}
+                    onTileClick={this.state.complete || this.state.pendingCall ? null : this.onTileClicked}
+                />
             </div>
         );
     }
