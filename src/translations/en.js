@@ -194,6 +194,7 @@ export const en = {
                 callInstructions: "A tile is on offer. Call it or pass.",
                 completeInstructions: "The hand is over. Start a new one to play again.",
                 doraIndicator: "Dora indicator",
+                yourHand: "Your hand",
                 round: "{{wind}} round",
                 turnCount: "turn {{turn}}",
                 wallCount: "wall {{wall}}",

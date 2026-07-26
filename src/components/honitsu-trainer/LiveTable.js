@@ -1,5 +1,6 @@
 import React from 'react';
 import LiveHand from './LiveHand';
+import Meld from '../Meld';
 import { getTileImage, getTileAsText } from '../../scripts/TileConversions';
 import { withTranslation } from 'react-i18next';
 import { SEAT_NAMES, PLAYER_NAMES } from '../../Constants';
@@ -74,6 +75,7 @@ class LiveTable extends React.Component {
             roundWind, doraIndicator, turn, wallCount } = this.props;
 
         return (
+            <div className="tableArea">
             <div className="mahjongTable">
                 {this.renderSeat(2)}
                 {this.renderSeat(3)}
@@ -97,19 +99,32 @@ class LiveTable extends React.Component {
 
                 {this.renderSeat(1)}
 
+                {/* Your seat holds what the table can see of you: the called
+                    sets and your pond. The hand itself is private, so it lives
+                    in its own panel outside the table. */}
                 <div className="tableSeat tableSeat--you">
                     <div className="tableSeat-header">
                         <span className="tableSeat-wind">{t(SEAT_NAMES[this.getSeatWind(0) - 31])}</span>
                         <span className="tableSeat-name">{t(PLAYER_NAMES[0])}</span>
                     </div>
-                    <LiveHand
-                        hand={hand}
-                        melds={melds}
-                        lastDraw={lastDraw}
-                        onTileClick={onTileClick}
-                    />
+                    {melds.length > 0 &&
+                        <div className="seatMelds">
+                            {melds.map((meld, index) => <Meld key={index} meld={meld} />)}
+                        </div>}
                     {this.renderPond(discards[0])}
                 </div>
+            </div>
+
+            {/* Your own hand, in its own panel: it is the one thing on screen
+                nobody else at the table can see, and the one thing you click. */}
+            <div className="handPanel">
+                <div className="handPanel-label">{t("honitsu.live.yourHand")}</div>
+                <LiveHand
+                    hand={hand}
+                    lastDraw={lastDraw}
+                    onTileClick={onTileClick}
+                />
+            </div>
             </div>
         );
     }

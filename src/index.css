@@ -498,7 +498,9 @@
     display: grid;
     grid-template-columns: repeat(6, var(--pond-tile-width));
     gap: 1px;
-    justify-content: start;
+    /* Centred so your own pond lines up under the centre square, the way the
+       ponds sit around a real table. */
+    justify-content: center;
 }
 
 @media (min-width: 768px) {
@@ -514,9 +516,47 @@
     display: block;
 }
 
-/* Your own pond sits under your hand, so it needs a gap to read as separate. */
-.tableSeat--you .pond {
-    margin-top: 0.5rem;
+.seatMelds {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* The hand panel is ordered after the table on desktop, where the seats read
+   top-down. On a phone the table is a single column, so the hand comes first
+   rather than sitting below four ponds. */
+.tableArea {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.handPanel {
+    order: -1;
+    padding: 0.5rem 0.6rem;
+    border-radius: 0.5rem;
+    background: rgba(0, 0, 0, 0.3);
+    color: #FFFFFF;
+}
+
+@media (min-width: 768px) {
+    .handPanel {
+        order: 0;
+    }
+}
+
+.handPanel-label {
+    font-size: 0.85rem;
+    opacity: 0.8;
+    margin-bottom: 0.25rem;
+    text-align: center;
+}
+
+.handPanel .honitsuHand {
+    justify-content: center;
+    margin-top: 0;
 }
 
 .tableCenter {
