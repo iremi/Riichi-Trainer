@@ -177,12 +177,68 @@ export const en = {
             modes: {
                 routing: "Routing",
                 calling: "Calling",
-                value_gate: "Value"
+                value_gate: "Value",
+                live: "Live hand"
             },
             instructions: {
                 routing: "Pick the road: play it straight towards riichi, hedge, or commit to honitsu.",
                 calling: "A tile is offered or drawn. Decide what to do with it.",
-                value_gate: "Count the han. Only completed triplets score, and a wind is worth nothing unless it is your seat wind or the round wind."
+                value_gate: "Count the han. Only completed triplets score, and a wind is worth nothing unless it is your seat wind or the round wind.",
+                live: "Play the hand out. Choose your road as the tiles arrive; the coach stays quiet unless you ask."
+            },
+            live: {
+                newHand: "New Hand",
+                hint: "Hint",
+                hideHint: "Hide Hint",
+                instructions: "Click a tile to discard it.",
+                callInstructions: "A tile is on offer. Call it or pass.",
+                completeInstructions: "The hand is over. Start a new one to play again.",
+                doraIndicator: "Dora indicator",
+                wall: "Wall",
+                offered: "{{player}} discards",
+                pon: "Pon",
+                chi: "Chi with {{tiles}}",
+                pass: "Pass",
+                speedLine: "Speed line",
+                honitsuLine: "Honitsu line",
+                shantenValue: "{{shanten}} shanten",
+                ukeireValue: "{{ukeire}} tiles",
+                hanValue: "{{han}} han",
+                hanCeiling: "{{han}} han now, {{ceiling}} if the pairs land",
+                noYaku: "no yaku — this hand cannot win",
+                pending: "Waiting on: {{sources}}. A pair is not a han until it is a triplet.",
+                roads: {
+                    riichi: "Play it straight",
+                    hedge: "Hedge",
+                    honitsu: "Commit to honitsu"
+                },
+                suits: {
+                    manzu: "manzu",
+                    pinzu: "pinzu",
+                    souzu: "souzu"
+                },
+                reasons: {
+                    stop1: "An honor triplet is a finished set that already carries a yaku. Riichi reaches mangan here with nothing forced.",
+                    stop2: "Two ryanmen in other suits means the hand already has speed. Honitsu would cut both and rebuild a wait from nothing.",
+                    stop3: "A finished set sits in another suit. Breaking a completed block is the most expensive thing you can do to a hand.",
+                    triggerA: "The hand is scattered and will not reach tenpai straight. Calls advance it, and the honors you carry double as fold stock.",
+                    triggerB: "Honitsu turns this into a mangan, which justifies a worse wait. This overrides the stop patterns.",
+                    valueGate: "Honitsu here has no second source of han, so it is worth about 2,000. Never pay good blocks for that.",
+                    hedge: "It could still go either way. Play efficiently, and shift if an honor pairs or a floater joins the suit.",
+                    committed: "You have already called, so the hand is committed. Keep taking in-suit tiles.",
+                    openNoYaku: "Your calls have left the honitsu out of reach, and an open hand needs a yaku to win.",
+                    noHonitsu: "No honitsu is reachable from here."
+                },
+                ended: {
+                    tenpai: "Tenpai — the hand is ready.",
+                    wall: "The wall ran out."
+                },
+                tookHonitsu: "You finished on a {{suit}} honitsu.",
+                tookStraight: "You finished with a mixed hand, not a honitsu.",
+                yakulessWarning: "This hand is open with no yaku, so it cannot win. That is the bakahon trap.",
+                shiftPoint: "The shift point was turn {{turn}}: honitsu in {{suit}} was worth {{han}} han, {{ceiling}} if the pairs landed.",
+                deviations: "You discarded against the road on {{missed}} of {{total}} turns.",
+                wanted: "wanted"
             },
             seatWind: "Seat",
             roundWind: "Round",

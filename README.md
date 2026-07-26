@@ -50,8 +50,47 @@ decision made in the first few turns, and mixing it into tile efficiency would m
 shares no state with the trainer, so settings like the starting hand shanten filter do not
 apply here.
 
-It is a drill, not a played-out hand — each item is a position, one answer, and an explanation.
-There are three modes:
+It has four modes: three drills, and a **Live hand** you actually play out.
+
+### Live hand
+
+Deal a hand and play it: discard, take draws, and call or pass on what the table offers. Called
+sets become real melds, so calling opens the hand — riichi is off and a closed honitsu drops from
+three han to two. Opponents' discards are shown, since reading whether your suit is still being
+fed is part of the decision.
+
+**The coach is silent unless you ask.** Every discard is analysed and recorded as it happens, but
+nothing is shown until you press **Hint**, so the hand is a real test by default. The hint reveals
+both lines side by side with their actual numbers — the speed line and the honitsu line, each with
+its shanten, acceptance and value — plus which road the hand is on and why. Showing the trade
+rather than a single verdict is deliberate: the routing decision *is* that trade.
+
+The honitsu line needs no separate engine. Shanten is `8 - 2·sets - partials - pair` over a counts
+array, so masking the array down to one suit plus the honors yields the shanten of the honitsu hand
+directly, and masking the remaining tiles the same way makes the existing ukeire code
+honitsu-aware. Called sets are handled by the same `getShantenOffset` the rest of the app uses.
+
+The road classifier implements the decision order in `honitsu/honitsu-rules.md` §7 — the stop
+patterns, the two go triggers, and the value gate — rather than a value model invented for the
+purpose. **It is checked against the pro's own rulings:** `HonitsuAnalysis.test.js` runs the
+classifier over every dealt routing item in the bank and asserts it picks the authored answer.
+
+Two things that test caught, both worth knowing:
+
+- The value gate is judged on what an **open** honitsu would be worth, because committing means
+  calling for it. Scored closed, every hand looks like a mangan, since a closed honitsu is already
+  three han before anything is stacked on it.
+- Trigger A is not really "the hand is scattered", it is "honitsu costs nothing". When the hand is
+  already mostly one suit plus honors, the switch is free and you take it even when it is cheap.
+
+When the hand ends — tenpai, or the wall running out — you get a review: which road you actually
+finished on, the han breakdown, the turn the shift point arrived, and every turn you discarded
+against the road. An open hand that finishes with no yaku is called out explicitly; that is the
+bakahon trap, and dora and red fives cannot rescue it, since neither is a yaku on its own.
+
+### The drills
+
+Each drill item is a position, one answer, and an explanation:
 
 - **Routing** — a dealt hand, and the choice between playing straight for riichi, hedging, or
   committing to honitsu. Seat and round wind are always shown, because guest-wind status flips

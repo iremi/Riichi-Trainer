@@ -162,7 +162,8 @@
 /* Tile size is set once here and derived everywhere else. The tile art is
    192x256, so an upright tile is 4/3 as tall as it is wide, and a called tile
    lying on its side is 4/3 as wide as it is tall. */
-.honitsuCard {
+.honitsuCard,
+.liveView {
     --honitsu-tile-width: clamp(26px, 7.5vw, 42px);
     --honitsu-tile-height: calc(var(--honitsu-tile-width) * 4 / 3);
 }
@@ -333,6 +334,191 @@
 .honitsuStatsTable th,
 .honitsuStatsTable td {
     color: #FFFFFF;
+}
+
+/* --- Honitsu live hand -------------------------------------------------- */
+
+.liveTile img {
+    cursor: pointer;
+}
+
+/* The tile just drawn sits apart from the sorted run, the way it would on a
+   real rack, so it is obvious what is new this turn. */
+.liveTile--drawn {
+    margin-left: 0.5rem;
+}
+
+.callPrompt {
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 0.5rem;
+    padding: 0.6rem;
+}
+
+.callPrompt-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #FFFFFF;
+}
+
+/* The coach, shown only on request. The left border colour names the road at a
+   glance without having to read the verdict. */
+.roadHint {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.75rem;
+    border-radius: 0.5rem;
+    background: rgba(0, 0, 0, 0.18);
+    border-left: 5px solid #FFFFFF;
+    color: #FFFFFF;
+}
+
+.roadHint--riichi {
+    border-left-color: #9BE59B;
+}
+
+.roadHint--hedge {
+    border-left-color: #FFD966;
+}
+
+.roadHint--honitsu {
+    border-left-color: #7FC7FF;
+}
+
+.roadHint-verdict {
+    font-weight: bold;
+    font-size: 1.05rem;
+}
+
+.roadHint-reason {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    margin-bottom: 0.4rem;
+}
+
+.roadHint-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: baseline;
+    padding: 0.15rem 0;
+}
+
+.roadHint-lineLabel {
+    font-weight: bold;
+    min-width: 7.5rem;
+}
+
+.roadHint-value {
+    opacity: 0.9;
+    font-style: italic;
+}
+
+.roadHint-pending {
+    margin-top: 0.4rem;
+    font-size: 0.9rem;
+    opacity: 0.9;
+    color: #FFFFFF;
+}
+
+.liveDiscards {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.liveDiscards-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.liveDiscards-label {
+    min-width: 5.5rem;
+    font-size: 0.85rem;
+    opacity: 0.85;
+}
+
+.liveDiscards-tiles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1px;
+}
+
+.liveDiscards-tile {
+    width: calc(var(--honitsu-tile-width) * 0.62);
+    height: auto;
+    display: block;
+}
+
+.liveResult {
+    padding: 0.6rem 0.75rem;
+    border-radius: 0.5rem;
+    background: rgba(0, 0, 0, 0.18);
+    color: #FFFFFF;
+}
+
+.liveResult-warning {
+    margin-top: 0.4rem;
+    font-weight: bold;
+    color: #FF9B9B;
+}
+
+.liveResult-shift {
+    font-style: italic;
+    opacity: 0.95;
+}
+
+/* A long hand produces a long log, so it scrolls inside the result panel
+   rather than pushing everything else off the page. */
+.liveReview {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    max-height: 22rem;
+    overflow-y: auto;
+}
+
+.honitsuVerdict.text-warning {
+    color: #FFD966 !important;
+}
+
+.liveReview-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.15rem 0.3rem;
+    border-radius: 0.25rem;
+}
+
+/* Only the turns that went against the road are called out, so the review is
+   about the decisions rather than the whole log. */
+.liveReview-row--missed {
+    background: rgba(255, 155, 155, 0.22);
+}
+
+.liveReview-turn {
+    min-width: 1.5rem;
+    opacity: 0.75;
+    font-size: 0.85rem;
+}
+
+.liveReview-tile {
+    width: calc(var(--honitsu-tile-width) * 0.62);
+    height: auto;
+    display: block;
+}
+
+.liveReview-road {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.liveReview-suggestion {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.85rem;
+    margin-left: auto;
 }
 
 .tenhouLink {

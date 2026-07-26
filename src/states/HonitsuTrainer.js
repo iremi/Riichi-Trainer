@@ -2,12 +2,19 @@ import React from 'react';
 import { Container, Row, Col, Button, Input, Label, FormGroup } from 'reactstrap';
 import HonitsuItemCard from '../components/honitsu-trainer/HonitsuItemCard';
 import HonitsuStats from '../components/honitsu-trainer/HonitsuStats';
+import HonitsuLive from './HonitsuLive';
 import { buildDeck, prepareItem, getRuleKey, DRILL_TYPES } from '../scripts/HonitsuItems';
 import { generateValueItem } from '../scripts/HonitsuValue';
 import { withTranslation } from 'react-i18next';
 
 const STATS_KEY = "honitsuStats";
 const SETTINGS_KEY = "honitsuSettings";
+
+/** @readonly The live mode plays a hand out instead of asking a drill question. */
+const LIVE_MODE = "live";
+
+/** @readonly Every mode offered, drills first. */
+const MODES = DRILL_TYPES.concat([LIVE_MODE]);
 
 /**
  * The honitsu drill.
@@ -64,6 +71,12 @@ class HonitsuTrainer extends React.Component {
      * @param {string} mode The drill type to start.
      */
     startMode(mode) {
+        // The live mode plays a hand out and keeps its own state.
+        if (mode === LIVE_MODE) {
+            this.setState({ mode, deck: [], item: null, chosen: null, answered: false });
+            return;
+        }
+
         let deck = buildDeck(mode);
         this.setState({ mode, deck }, () => this.drawNextItem());
     }
@@ -172,12 +185,13 @@ class HonitsuTrainer extends React.Component {
     render() {
         let { t } = this.props;
         let { mode, item, chosen, answered, stats, settings } = this.state;
+        let isLive = mode === LIVE_MODE;
 
         return (
             <Container className="trainer-container">
                 <Row className="mb-2">
-                    {DRILL_TYPES.map((type) => (
-                        <Col xs="4" key={type} className="px-1">
+                    {MODES.map((type) => (
+                        <Col xs="6" sm="3" key={type} className="px-1 mb-1">
                             <Button
                                 className="btn-block honitsuMode"
                                 color={mode === type ? "success" : "secondary"}
@@ -196,27 +210,34 @@ class HonitsuTrainer extends React.Component {
                     </Col>
                 </Row>
 
-                <HonitsuStats stats={stats} onReset={this.onResetStats} />
+                {/* The drill's progress and disguise settings have nothing to
+                    act on while a hand is being played out. */}
+                {!isLive &&
+                    <React.Fragment>
+                        <HonitsuStats stats={stats} onReset={this.onResetStats} />
 
-                <FormGroup check className="mb-2">
-                    <Label check>
-                        <Input
-                            type="checkbox"
-                            id="mirrorSuits"
-                            checked={settings.mirrorSuits}
-                            onChange={this.onSettingChanged}
-                        />
-                        <span>{t("honitsu.mirrorSuits")}</span>
-                    </Label>
-                </FormGroup>
+                        <FormGroup check className="mb-2">
+                            <Label check>
+                                <Input
+                                    type="checkbox"
+                                    id="mirrorSuits"
+                                    checked={settings.mirrorSuits}
+                                    onChange={this.onSettingChanged}
+                                />
+                                <span>{t("honitsu.mirrorSuits")}</span>
+                            </Label>
+                        </FormGroup>
+                    </React.Fragment>}
 
-                <HonitsuItemCard
-                    item={item}
-                    chosen={chosen}
-                    answered={answered}
-                    onAnswer={this.onAnswer}
-                    onNext={this.onNext}
-                />
+                {isLive
+                    ? <HonitsuLive />
+                    : <HonitsuItemCard
+                        item={item}
+                        chosen={chosen}
+                        answered={answered}
+                        onAnswer={this.onAnswer}
+                        onNext={this.onNext}
+                    />}
             </Container>
         );
     }
